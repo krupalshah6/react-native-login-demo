@@ -30,13 +30,17 @@ import {
 } from 'react-native-responsive-screen';
 
 // validation rules
-import {isValidEmail, isValidPassword} from '../resource/validationRules';
+import {
+  isValidEmail,
+  isValidPassword,
+  showMessage,
+} from '../resource/validationRules';
 // error strings
 import errorStrings from '../resource/errorString';
 // loader
 import MainLoader from '../components/loaders/MainLoader';
 
-import {Notification} from 'react-native-in-app-message';
+import AsyncStorage from '@react-native-community/async-storage';
 
 /**
  * Login module with custom  validation and solved keyboard glitch.
@@ -57,7 +61,6 @@ class LoginScreen extends PureComponent {
       isDisabled: false,
       emailError: '',
       passwordError: '',
-      errorMessage: '',
     };
     this.handleLogin = this.handleLogin.bind(this);
     this.handleEmail = this.handleEmail.bind(this);
@@ -145,14 +148,15 @@ class LoginScreen extends PureComponent {
       if (this.props.response === undefined) {
         return;
       }
-      const {status, message} = this.props.response;
+      const {status, message, data} = this.props.response;
       if (status === false) {
-        this.setState({errorMessage: message}, () => {
-          Notification.show();
-        });
+        showMessage(message);
+      } else if (status === true) {
+        AsyncStorage.setItem('user', JSON.stringify(data));
+        this.props.navigation.replace('Home');
       }
     });
-    // this.props.navigation.replace('Home');
+    //
   }
 
   render() {
@@ -174,6 +178,7 @@ class LoginScreen extends PureComponent {
             returnKeyType="next"
             error={emailError}
             blurOnSubmit={constants.IS_IOS}
+            autoCapitalize="none"
           />
           <FormTypeText
             value={this.state.password}
@@ -191,10 +196,6 @@ class LoginScreen extends PureComponent {
           />
         </View>
         {this.props.isBusy ? <MainLoader /> : null}
-        <Notification
-          text={this.state.errorMessage}
-          onPress={Notification.hide}
-        />
       </KeyboardAvoidingView>
     );
   }
