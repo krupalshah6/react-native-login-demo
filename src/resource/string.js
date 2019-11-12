@@ -3,7 +3,7 @@ const strings = {
   LOGIN: 'LOG IN',
   EMAIL: 'Email',
   PASSWORD: 'Password',
-  EMAILREQ: 'Enter Email',
+  EMAILREQ: 'Enter Valid Email',
   PASSREQ: 'Enter Password',
 };
 

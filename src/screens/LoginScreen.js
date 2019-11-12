@@ -1,24 +1,52 @@
 import React, {PureComponent} from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import {
   View,
   StyleSheet,
   Image,
   KeyboardAvoidingView,
   StatusBar,
-  Text
+  Keyboard,
 } from 'react-native';
 // colors
 import colors from '../resource/colors';
 // string
 import strings from '../resource/string';
 // button
-import ButtonLogin from '../components/ButtonLogin';
+import ButtonLogin from '../components/buttons/ButtonLogin';
 //logo
 import logo from '../assets/images/Logoforwhite2.png';
 // input type text
-import FormTypeText from '../components/FormTypeText';
+import FormTypeText from '../components/inputElements/FormTypeText';
 // constants
 import constants from '../resource/constants';
+// actions
+import {userLogin} from '../redux/actions/authActions';
+// responsive hight width
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+
+// validation rules
+import {isValidEmail, isValidPassword} from '../resource/validationRules';
+// error strings
+import errorStrings from '../resource/errorString';
+// loader
+import MainLoader from '../components/loaders/MainLoader';
+
+import {Notification} from 'react-native-in-app-message';
+
+/**
+ * Login module with custom  validation and solved keyboard glitch.
+ * @module LoginScreen
+ */
+
+/**
+ * @class LoginScreen
+ */
+
 class LoginScreen extends PureComponent {
   passwordInputRef = React.createRef();
   constructor(props) {
@@ -26,22 +54,47 @@ class LoginScreen extends PureComponent {
     this.state = {
       email: '',
       password: '',
-      emailTouched: false,
-      passwordTouched: false,
+      isDisabled: false,
+      emailError: '',
+      passwordError: '',
+      errorMessage: '',
     };
     this.handleLogin = this.handleLogin.bind(this);
     this.handleEmail = this.handleEmail.bind(this);
     this.handlePassword = this.handlePassword.bind(this);
     this.handleEmailSubmitPress = this.handleEmailSubmitPress.bind(this);
-    this.handleEmailBlur = this.handleEmailBlur.bind(this);
-    this.handlePasswordBlur = this.handlePasswordBlur.bind(this);
   }
+
+  /**
+   * Returns value of email
+   *
+   * @method handleEmail
+   * @return {String} value of email
+   * @param {String} email
+   */
 
   handleEmail(email) {
     this.setState({email}, () => {
-      console.log('email', this.state.email);
+      if (this.state.email === '') {
+        this.setState({isDisabled: true, emailError: errorStrings.EMAILREQ});
+      } else {
+        if (isValidEmail(email)) {
+          this.setState({isDisabled: false, emailError: ''});
+        } else {
+          this.setState({
+            isDisabled: true,
+            emailError: errorStrings.EMAILVALID,
+          });
+        }
+      }
     });
   }
+
+  /**
+   * Set focus of text field using reference
+   *
+   * @method handleEmailSubmitPress
+   */
 
   handleEmailSubmitPress() {
     if (this.passwordInputRef.current) {
@@ -49,30 +102,61 @@ class LoginScreen extends PureComponent {
     }
   }
 
+  /**
+   * Returns value of password
+   *
+   * @method handlePassword
+   * @return {String} value of password
+   * @param {String} password
+   */
   handlePassword(password) {
     this.setState({password}, () => {
-      console.log('password', this.state.password);
+      if (this.state.password === '') {
+        this.setState({passwordError: errorStrings.PASSREQ, isDisabled: true});
+      } else {
+        if (!isValidPassword(password, 6)) {
+          this.setState({
+            passwordError: errorStrings.PASSWORDVALID,
+            isDisabled: true,
+          });
+        } else {
+          this.setState({passwordError: '', isDisabled: false});
+        }
+      }
     });
   }
-
-  handleEmailBlur() {
-    this.setState({emailTouched: true});
-  }
-
-  handlePasswordBlur() {
-    this.setState({passwordTouched: true});
-  }
-
   handleLogin() {
+    const {email, password} = this.state;
+    if (email === '') {
+      this.setState({emailError: errorStrings.EMAILREQ});
+      return;
+    }
+    if (password === '') {
+      this.setState({passwordError: errorStrings.PASSREQ});
+      return;
+    }
     console.log('login pressed');
+    const userLoginData = {
+      email: email,
+      password: password,
+    };
+    Keyboard.dismiss();
+    this.props.userLogin(userLoginData).then(value => {
+      if (this.props.response === undefined) {
+        return;
+      }
+      const {status, message} = this.props.response;
+      if (status === false) {
+        this.setState({errorMessage: message}, () => {
+          Notification.show();
+        });
+      }
+    });
+    // this.props.navigation.replace('Home');
   }
 
   render() {
-    const {email, password, emailTouched, passwordTouched} = this.state;
-    const emailError = !email && emailTouched ? strings.EMAILREQ : undefined;
-    const passwordError =
-      !password && passwordTouched ? strings.PASSREQ : undefined;
-
+    const {emailError, passwordError, isDisabled} = this.state;
     return (
       <KeyboardAvoidingView
         style={styles.container}
@@ -88,7 +172,6 @@ class LoginScreen extends PureComponent {
             autoCorrect={false}
             keyboardType="email-address"
             returnKeyType="next"
-            onBlur={this.handleEmailBlur}
             error={emailError}
             blurOnSubmit={constants.IS_IOS}
           />
@@ -99,15 +182,19 @@ class LoginScreen extends PureComponent {
             placeholder={strings.PASSWORD}
             secureTextEntry={true}
             returnKeyType="done"
-            onBlur={this.handlePasswordBlur}
             error={passwordError}
           />
           <ButtonLogin
             label={strings.LOGIN}
             onPress={this.handleLogin}
-            disabled={!email || !password}
+            disabled={isDisabled}
           />
         </View>
+        {this.props.isBusy ? <MainLoader /> : null}
+        <Notification
+          text={this.state.errorMessage}
+          onPress={Notification.hide}
+        />
       </KeyboardAvoidingView>
     );
   }
@@ -122,15 +209,32 @@ let styles = StyleSheet.create({
   },
   imageLogo: {
     flex: 1,
-    width: '80%',
+    width: wp(80),
     alignSelf: 'center',
     resizeMode: 'contain',
   },
   form: {
     flex: 1,
-    width: '80%',
+    width: wp(80),
     justifyContent: 'center',
   },
 });
 
-export default LoginScreen;
+function mapStateToProps(state) {
+  return {
+    isBusy: state.authUser.isBusy,
+    response: state.authUser.response,
+    error: state.authUser.error,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    ...bindActionCreators({userLogin}, dispatch),
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(LoginScreen);

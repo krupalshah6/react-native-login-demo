@@ -1,11 +1,16 @@
-import {createAppContainer} from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack';
-import LoginScreen from './src/screens/LoginScreen';
-
-const MainNavigator = createStackNavigator({
-  LOGIN: {screen: LoginScreen, navigationOptions: {header: null}},
-});
-
-const App = createAppContainer(MainNavigator);
-
+import React, {PureComponent} from 'react';
+import {Provider} from 'react-redux';
+import {store} from './src/redux/store';
+import Index from './src/Index';
+console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
+console.disableYellowBox = true;
+class App extends PureComponent {
+  render() {
+    return (
+      <Provider store={store}>
+        <Index />
+      </Provider>
+    );
+  }
+}
 export default App;

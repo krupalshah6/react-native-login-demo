@@ -1,7 +1,23 @@
 import React, {PureComponent} from 'react';
 import {TouchableOpacity, StyleSheet, Text} from 'react-native';
 //colors
-import colors from '../resource/colors';
+import colors from '../../resource/colors';
+
+/**
+ * this button class is re-usable component within app.
+ * @class ButtonLogin
+ */
+
+/**
+ * properties which is used in this component is -
+ * @method onPress method is used for onPress button.
+ */
+
+/**
+ * @event TouchableOpacity
+ * @param {String} label name of button
+ * @param {Boolean} disabled used for change opacity of button for enable and disable
+ */
 
 class ButtonLogin extends PureComponent {
   constructor(props) {
