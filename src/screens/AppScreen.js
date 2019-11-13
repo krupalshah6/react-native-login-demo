@@ -6,6 +6,7 @@ import {createStackNavigator} from 'react-navigation-stack';
 import LoginScreen from './LoginScreen';
 import HomeScreen from './HomeScreen';
 import AsyncStorage from '@react-native-community/async-storage';
+import SignupScreen from './SignupScreen';
 /**
  * @class AppScreen
  */
@@ -67,6 +68,7 @@ const MainNavigator = createStackNavigator(
 const LoginNavigator = createStackNavigator({
   LOGIN: {screen: LoginScreen, navigationOptions: {header: null}},
   Home: {screen: HomeScreen, navigationOptions: {header: null}},
+  SIGNUP: {screen: SignupScreen, navigationOptions: {header: null}}
 });
 
 const switchNavigator = createSwitchNavigator(

@@ -6,8 +6,8 @@ import {
   StyleSheet,
   Image,
   KeyboardAvoidingView,
-  StatusBar,
   Keyboard,
+  Text,
 } from 'react-native';
 // colors
 import colors from '../resource/colors';
@@ -41,7 +41,8 @@ import errorStrings from '../resource/errorString';
 import MainLoader from '../components/loaders/MainLoader';
 
 import AsyncStorage from '@react-native-community/async-storage';
-
+import NetInfo from '@react-native-community/netinfo';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 /**
  * Login module with custom  validation and solved keyboard glitch.
  * @module LoginScreen
@@ -61,12 +62,26 @@ class LoginScreen extends PureComponent {
       isDisabled: false,
       emailError: '',
       passwordError: '',
+      isConnected: false,
     };
     this.handleLogin = this.handleLogin.bind(this);
     this.handleEmail = this.handleEmail.bind(this);
     this.handlePassword = this.handlePassword.bind(this);
     this.handleEmailSubmitPress = this.handleEmailSubmitPress.bind(this);
+    this.handleSignUp = this.handleSignUp.bind(this);
   }
+
+  componentDidMount() {
+    this._subscription = NetInfo.addEventListener(
+      this._handleConnectivityChange,
+    );
+  }
+
+  _handleConnectivityChange = state => {
+    this.setState({isConnected: state.isConnected}, () => {
+      console.log('net', this.state.isConnected);
+    });
+  };
 
   /**
    * Returns value of email
@@ -138,11 +153,14 @@ class LoginScreen extends PureComponent {
       this.setState({passwordError: errorStrings.PASSREQ});
       return;
     }
-    console.log('login pressed');
     const userLoginData = {
       email: email,
       password: password,
     };
+    if (!this.state.isConnected) {
+      showMessage(strings.NO_INTERNET_CONNECTION);
+      return;
+    }
     Keyboard.dismiss();
     this.props.userLogin(userLoginData).then(value => {
       if (this.props.response === undefined) {
@@ -159,13 +177,16 @@ class LoginScreen extends PureComponent {
     //
   }
 
+  handleSignUp() {
+    this.props.navigation.replace('SIGNUP');
+  }
+
   render() {
     const {emailError, passwordError, isDisabled} = this.state;
     return (
       <KeyboardAvoidingView
         style={styles.container}
         behavior={constants.IS_IOS ? 'padding' : undefined}>
-        <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
         <Image source={logo} style={styles.imageLogo} />
         <View style={styles.form}>
           <FormTypeText
@@ -193,6 +214,20 @@ class LoginScreen extends PureComponent {
             label={strings.LOGIN}
             onPress={this.handleLogin}
             disabled={isDisabled}
+            buttonColor={colors.DODGER_BLUE}
+            textColor={colors.WHITE}
+          />
+          <TouchableOpacity style={styles.forgotPassword}>
+            <Text style={styles.forgotPasswordText}>
+              {strings.FORGOT_PASSWORD}
+            </Text>
+          </TouchableOpacity>
+          <ButtonLogin
+            label={strings.SIGNUP}
+            onPress={this.handleSignUp}
+            disabled={isDisabled}
+            buttonColor={colors.LIGHTGRAY}
+            textColor={colors.DODGER_BLUE}
           />
         </View>
         {this.props.isBusy ? <MainLoader /> : null}
@@ -218,6 +253,15 @@ let styles = StyleSheet.create({
     flex: 1,
     width: wp(80),
     justifyContent: 'center',
+  },
+  forgotPassword: {
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    marginBottom: 40,
+  },
+  forgotPasswordText: {
+    color: colors.DODGER_BLUE,
+    fontSize: 16,
   },
 });
 

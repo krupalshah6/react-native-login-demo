@@ -1,0 +1,16 @@
+<svg id="Oval_Copy_Oval_Mask" data-name="Oval Copy + Oval Mask" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="566" viewBox="0 0 1000 566">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#03a9e2"/>
+      <stop offset="1" stop-color="#036de2"/>
+    </linearGradient>
+    <clipPath id="clip-path">
+      <rect id="Mask" width="1000" height="566" fill="url(#linear-gradient)"/>
+    </clipPath>
+  </defs>
+  <rect id="Mask-2" data-name="Mask" width="1000" height="566" fill="url(#linear-gradient)"/>
+  <g id="Oval_Copy_Oval_Mask-2" data-name="Oval Copy + Oval Mask" clip-path="url(#clip-path)">
+    <circle id="Oval_Copy" data-name="Oval Copy" cx="744.5" cy="744.5" r="744.5" transform="translate(-448 -535)" opacity="0.579" fill="url(#linear-gradient)"/>
+    <ellipse id="Oval" cx="602" cy="601.5" rx="602" ry="601.5" transform="translate(-209 -561)" opacity="0.374" fill="url(#linear-gradient)"/>
+  </g>
+</svg>

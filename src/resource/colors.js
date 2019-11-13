@@ -6,5 +6,8 @@ const colors = {
   SILVER: '#BEBEBE',
   TORCH_RED: '#F8262F',
   MISCHKA: '#E5E4E6',
+  DARKGRAY: '#1e1e1e',
+  LOGOUT: '#ffffff80',
+  LIGHTGRAY: '#F5F5F5',
 };
 export default colors;
