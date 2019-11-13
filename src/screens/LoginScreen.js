@@ -178,7 +178,7 @@ class LoginScreen extends PureComponent {
   }
 
   handleSignUp() {
-    this.props.navigation.replace('SIGNUP');
+    this.props.navigation.navigate('SIGNUP');
   }
 
   render() {

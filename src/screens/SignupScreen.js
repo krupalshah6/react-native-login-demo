@@ -1,5 +1,12 @@
 import React, {PureComponent} from 'react';
-import {View, StyleSheet, Image, Text, TouchableOpacity} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Image,
+  Text,
+  TouchableOpacity,
+  Button,
+} from 'react-native';
 import logo from '../assets/images/Logoforwhite2.png';
 import colors from '../resource/colors';
 import {widthPercentageToDP} from 'react-native-responsive-screen';
@@ -11,14 +18,22 @@ import MainMenu from '../components/menu/SideMenu';
 //images
 import micLogo from '../assets/images/logoMain.png';
 import toggleMenu from '../assets/images/openMic/icon/menu-white.png';
+// input type text
+import FormTypeText from '../components/inputElements/FormTypeText';
+// formik
+import {Formik} from 'formik';
+import * as Yup from 'yup';
+
 class SignupScreen extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       isOpen: false,
+      fname: '',
     };
     this.toggleMenu = this.toggleMenu.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
+    this.handleFirstName = this.handleFirstName.bind(this);
   }
   toggleMenu() {
     this.setState({
@@ -31,7 +46,13 @@ class SignupScreen extends PureComponent {
   }
 
   handleLogin() {
-    this.props.navigation.replace('LOGIN');
+    this.setState({isOpen: false}, () => {
+      this.props.navigation.goBack(null);
+    });
+  }
+
+  handleFirstName(fname) {
+    console.log('fname', fname);
   }
 
   render() {
@@ -43,6 +64,19 @@ class SignupScreen extends PureComponent {
         isLogin={this.handleLogin}
       />
     );
+    const validationSchema = Yup.object().shape({
+      fName: Yup.string()
+        .label('fName')
+        .required('Please enter first name'),
+      lName: Yup.string()
+        .label('lName')
+        .required('Please enter last name'),
+      email: Yup.string()
+        .label('Email')
+        .email('Enter a valid email')
+        .required('Please enter a registered email'),
+    });
+
     return (
       <SideMenu
         menu={this.state.isOpen && menu}
@@ -64,7 +98,47 @@ class SignupScreen extends PureComponent {
             <Text style={styles.SignUpText}>{strings.SIGNUP_SMALL}</Text>
             <View style={styles.dotted} />
             <Text style={styles.signInfo}>{strings.SIGNUPTEXT}</Text>
-            <View style={styles.form} />
+
+            <Formik
+              initialValues={{fName: '', lName: '', email: ''}}
+              validationSchema={validationSchema}
+              onSubmit={values => console.log(values)}>
+              {({handleChange, handleBlur, handleSubmit, values, errors}) => (
+                <View style={styles.form}>
+                  <FormTypeText
+                    value={values.fname}
+                    onChangeText={handleChange('fName')}
+                    onBlur={handleBlur('fName')}
+                    placeholder={strings.FIRSTNAME}
+                    error={errors.fName}
+                    returnKeyType="next"
+                  />
+                  <FormTypeText
+                    value={values.lName}
+                    onChangeText={handleChange('lName')}
+                    onBlur={handleBlur('lName')}
+                    placeholder={strings.LASTNAME}
+                    error={errors.lName}
+                    returnKeyType="next"
+                  />
+                  <FormTypeText
+                    value={values.email}
+                    onChangeText={handleChange('email')}
+                    onBlur={handleBlur('email')}
+                    placeholder={strings.EMAILTEXT}
+                    error={errors.email}
+                    keyboardType="email-address"
+                    returnKeyType="next"
+                    autoCapitalize="none"
+                  />
+                  <Button
+                    style={styles.buttonStyle}
+                    onPress={handleSubmit}
+                    title="Submit"
+                  />
+                </View>
+              )}
+            </Formik>
           </View>
         </View>
       </SideMenu>
@@ -119,6 +193,15 @@ let styles = StyleSheet.create({
   form: {
     flex: 1,
     marginTop: 10,
+  },
+  buttonStyle: {
+    borderRadius: 4,
+    paddingVertical: 12,
+    marginBottom: 12,
+    borderRightWidth: StyleSheet.hairlineWidth,
+    borderColor: 'rgba(255,255,255,0.7)',
+    backgroundColor: colors.LIGHTGRAY,
+    opacity: 1,
   },
 });
 export default SignupScreen;

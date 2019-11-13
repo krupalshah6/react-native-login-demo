@@ -12,6 +12,9 @@ const strings = {
   SIGNUPTEXT:
     'You need an account to edit, manage, and eventually delete your mic when the venue goes out of business.',
   LOGOUT: 'LOGOUT',
+  FIRSTNAME: 'First Name *',
+  LASTNAME: 'Last Name *',
+  EMAILTEXT: 'Email Address *',
 };
 
 export default strings;
