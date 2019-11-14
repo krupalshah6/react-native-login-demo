@@ -25,13 +25,6 @@ class ReSendMailModal extends PureComponent {
     return (
       <Modal visible={modalVisible} animationType="slide" transparent={true}>
         <View style={styles.mainView}>
-          <View style={styles.rowView}>
-            <TouchableOpacity style={styles.closeIcon} onPress={toggleModal}>
-              <View>
-                <Text style={styles.closeIconSize}>X</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
           <ScrollView>
             <View style={styles.emailImage}>
               <Image
@@ -61,6 +54,13 @@ class ReSendMailModal extends PureComponent {
               <Text style={styles.footerText}>{strings.FOOTER_SENDMAIL}</Text>
             </View>
           </ScrollView>
+          <View style={styles.rowView}>
+            <TouchableOpacity style={styles.closeIcon} onPress={toggleModal}>
+              <View>
+                <Text style={styles.closeIconSize}>X</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
       </Modal>
     );
@@ -85,15 +85,20 @@ let styles = StyleSheet.create({
     marginLeft: 5,
     marginRight: 5,
     marginTop: 10,
+    flexDirection: 'row',
+  },
+  mainRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   rowView: {
     flexDirection: 'row',
-    alignSelf: 'flex-end',
     position: 'absolute',
+    end: 0,
   },
   closeIcon: {
-    top: 10,
-    right: 20,
+    margin: 20,
   },
   closeIconSize: {
     fontSize: RFPercentage(3),

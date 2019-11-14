@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Keyboard,
+  Switch,
 } from 'react-native';
 //sidemenu
 import SideMenu from 'react-native-side-menu';
@@ -15,7 +16,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import NetInfo from '@react-native-community/netinfo';
 // styles
 import {styles} from './styles';
-// images 
+// images
 import {icon} from '../../resource/icons';
 // strings
 import strings from '../../resource/string';
@@ -37,10 +38,12 @@ class LoginScreen extends PureComponent {
     this.state = {
       isOpen: false,
       fname: '',
+      showPassword: true,
     };
     this.toggleMenu = this.toggleMenu.bind(this);
     this.handleSignUp = this.handleSignUp.bind(this);
     this.handleFirstName = this.handleFirstName.bind(this);
+    this.toggleSwitch = this.toggleSwitch.bind(this);
   }
 
   componentDidMount() {
@@ -73,6 +76,10 @@ class LoginScreen extends PureComponent {
 
   handleFirstName(fname) {
     console.log('fname', fname);
+  }
+
+  toggleSwitch() {
+    this.setState({showPassword: !this.state.showPassword});
   }
 
   render() {
@@ -159,15 +166,31 @@ class LoginScreen extends PureComponent {
                       returnKeyType="next"
                       autoCapitalize="none"
                     />
-                    <FormTypeText
-                      value={values.password}
-                      onChangeText={handleChange('password')}
-                      onBlur={handleBlur('password')}
-                      placeholder={strings.PASSWORDTEXT}
-                      error={errors.password}
-                      returnKeyType="next"
-                      secureTextEntry={true}
-                    />
+                    <View style={styles.passwordView}>
+                      <View style={styles.passwordsecondView}>
+                        <FormTypeText
+                          value={values.password}
+                          onChangeText={handleChange('password')}
+                          onBlur={handleBlur('password')}
+                          placeholder={strings.PASSWORDTEXT}
+                          error={errors.password}
+                          returnKeyType="next"
+                          secureTextEntry={this.state.showPassword}
+                        />
+                      </View>
+                      <TouchableOpacity
+                        style={styles.switchView}
+                        onPress={this.toggleSwitch}>
+                        <Image
+                          style={{width: 30, height: 30}}
+                          source={
+                            this.state.showPassword
+                              ? icon.EyeShow
+                              : icon.EyeClose
+                          }
+                        />
+                      </TouchableOpacity>
+                    </View>
                     <TouchableOpacity
                       style={styles.buttonStyle}
                       onPress={handleSubmit}>

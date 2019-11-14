@@ -5,4 +5,6 @@ export const icon = {
   TOGGLE: require('../assets/images/openMic/icon/menu-white.png'),
   BG_SENDMAIL: require('../assets/images/openMic/bg_mail.png'),
   EMAIL: require('../assets/images/openMic/email.png'),
+  EyeShow: require('../assets/images/show.png'),
+  EyeClose: require('../assets/images/eyeclose.png'),
 };

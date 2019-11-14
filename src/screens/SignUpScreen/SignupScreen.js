@@ -113,11 +113,11 @@ class SignupScreen extends PureComponent {
 
               <Formik
                 initialValues={{
-                  fName: 'dsfds',
-                  lName: 'dsfdsf',
-                  email: 'sdfsd@dsad.sad',
-                  password: '4324324234',
-                  contactNo: '23432432432',
+                  fName: '',
+                  lName: '',
+                  email: '',
+                  password: '',
+                  contactNo: '',
                 }}
                 validationSchema={validationSchema}
                 onSubmit={values => {

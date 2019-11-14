@@ -66,4 +66,15 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     height: 20,
   },
+  passwordView: {
+    flexDirection: 'row',
+  },
+  passwordsecondView: {
+    flex: 1,
+  },
+  switchView: {
+    position: 'absolute',
+    end: 0,
+    margin: 3,
+  },
 });
