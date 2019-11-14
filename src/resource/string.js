@@ -9,12 +9,20 @@ const strings = {
   FORGOT_PASSWORD: 'Forgot Password?',
   SIGNUP: 'SIGN UP',
   SIGNUP_SMALL: 'Sign Up',
+  LOGIN_SMALL: 'Login and Post your mic...',
   SIGNUPTEXT:
     'You need an account to edit, manage, and eventually delete your mic when the venue goes out of business.',
   LOGOUT: 'LOGOUT',
   FIRSTNAME: 'First Name *',
   LASTNAME: 'Last Name *',
   EMAILTEXT: 'Email Address *',
+  PASSWORDTEXT: 'Password *',
+  CONTACTNO: 'Contact Number *',
+  RESENDMAILTEXT:
+    'Congratulation! Welcome in Open Mic List.We sent you a link to ',
+  RESENDMAILTEXT2: 'Confirm your email address.',
+  SENDMAIL: 'RE SEND MAIL',
+  FOOTER_SENDMAIL: 'If you never received an email from us, there’s a few places the email may have landed: Please check your Spam, junk, and bulk mail folders: Sometimes our emails are blocked or filtered as spam by certain email providers or internet service providers (ISPs). You may also click the Resend Mail button above.', 
 };
 
 export default strings;

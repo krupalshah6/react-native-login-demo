@@ -43,6 +43,7 @@ const Styles = StyleSheet.create({
     width: '80%',
     alignSelf: 'center',
     resizeMode: 'contain',
+    margin: 10,
   },
 });
 

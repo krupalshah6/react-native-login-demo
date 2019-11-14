@@ -1,20 +1,16 @@
 import React, {PureComponent} from 'react';
-import {View, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import {View, Image, TouchableOpacity} from 'react-native';
+import {styles} from './styles';
 //images
-import micLogo from '../assets/images/logoMain.png';
-import toggleMenu from '../assets/images/openMic/icon/menu-white.png';
+import micLogo from '../../assets/images/logoMain.png';
+import toggleMenu from '../../assets/images/openMic/icon/menu-white.png';
 
 //sidemenu
 import SideMenu from 'react-native-side-menu';
 //menu
-import MainMenu from '../components/menu/SideMenu';
-import colors from '../resource/colors';
-import { throwStatement } from '@babel/types';
+import MainMenu from '../../components/menu/SideMenu';
 import AsyncStorage from '@react-native-community/async-storage';
+import strings from '../../resource/string';
 
 class HomeScreen extends PureComponent {
   constructor(props) {
@@ -46,8 +42,8 @@ class HomeScreen extends PureComponent {
       <MainMenu
         navigator={this.props.navigation}
         onPress={this.toggleMenu}
-        isLogout={this.handleLogout}
-        isSignUp={false}
+        buttonLabel={strings.LOGOUT}
+        onMethodPress={this.handleLogout}
       />
     );
     return (
@@ -72,26 +68,5 @@ class HomeScreen extends PureComponent {
     );
   }
 }
-
-let styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  rowCenter: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.DARKGRAY,
-  },
-  imageView: {
-    flexDirection: 'row',
-    padding: 10,
-  },
-  toggleButton: {
-    flexDirection: 'row',
-    position: 'absolute',
-    right: 0,
-    padding: 20,
-  },
-});
 
 export default HomeScreen;

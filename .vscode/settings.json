@@ -1,5 +1,7 @@
 {
   "cSpell.words": [
+    "BLACKLOGO",
+    "CONTACTNO",
     "DARKGRAY",
     "EMAILREQ",
     "EMAILTEXT",
@@ -9,13 +11,19 @@
     "LASTNAME",
     "LIGHTGRAY",
     "LOGINHEADING",
+    "LOGOMAIN",
     "Logoforblack",
     "Logoforwhite",
     "MISCHKA",
     "PASSREQ",
+    "PASSWORDTEXT",
     "PASSWORDVALID",
+    "RESENDMAILTEXT",
+    "SENDMAIL",
     "SIGNUPTEXT",
+    "WHITELOGO",
     "netinfo",
+    "openmiclist",
     "sidemenu"
   ]
 }

@@ -1,12 +1,16 @@
 import React, {PureComponent} from 'react';
 import {View, Image, StyleSheet} from 'react-native';
-import logo from '../assets/images/Logoforwhite2.png';
+// navigator library
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
-import LoginScreen from './LoginScreen';
-import HomeScreen from './HomeScreen';
+// icons
+import {icon} from '../resource/icons';
+//screens
 import AsyncStorage from '@react-native-community/async-storage';
-import SignupScreen from './SignupScreen';
+import LoginScreen from './LogInScreen/LoginScreen';
+import HomeScreen from './HomeScreen/HomeScreen';
+import SignupScreen from './SignUpScreen/SignupScreen';
+
 /**
  * @class AppScreen
  */
@@ -29,14 +33,14 @@ class LoaderScreen extends PureComponent {
       if (value) {
         this.props.navigation.navigate('withLogin');
       } else {
-        this.props.navigation.navigate('withoutLogin');
+        this.props.navigation.navigate('withOutLogin');
       }
     });
   };
   render() {
     return (
       <View style={Styles.container}>
-        <Image style={Styles.logo} source={logo} />
+        <Image style={Styles.logo} source={icon.WHITELOGO} />
       </View>
     );
   }
@@ -54,6 +58,7 @@ const Styles = StyleSheet.create({
     width: '80%',
     alignSelf: 'center',
     resizeMode: 'contain',
+    margin: 10,
   },
 });
 
@@ -68,14 +73,14 @@ const MainNavigator = createStackNavigator(
 const LoginNavigator = createStackNavigator({
   LOGIN: {screen: LoginScreen, navigationOptions: {header: null}},
   Home: {screen: HomeScreen, navigationOptions: {header: null}},
-  SIGNUP: {screen: SignupScreen, navigationOptions: {header: null}}
+  SIGNUP: {screen: SignupScreen, navigationOptions: {header: null}},
 });
 
 const switchNavigator = createSwitchNavigator(
   {
     loader: LoaderScreen,
     withLogin: MainNavigator,
-    withoutLogin: LoginNavigator,
+    withOutLogin: LoginNavigator,
   },
   {
     initialRouteName: 'loader',

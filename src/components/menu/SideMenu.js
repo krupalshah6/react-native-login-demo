@@ -1,20 +1,15 @@
 import React from 'react';
-import {View, StyleSheet, Image, Text, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import colors from '../../resource/colors';
-import strings from '../../resource/string';
 
-export default function MainMenu({onPress, isLogout, isSignUp, isLogin}) {
+export default function MainMenu({onPress, onMethodPress, buttonLabel}) {
   return (
     <View style={style.container}>
       <TouchableOpacity style={style.close} onPress={onPress}>
         <Text style={style.closeText}>X</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        style={style.logout}
-        onPress={!isSignUp ? isLogout : isLogin}>
-        <Text style={style.logoutText}>
-          {isSignUp ? strings.LOGIN : strings.LOGOUT}
-        </Text>
+      <TouchableOpacity style={style.logout} onPress={onMethodPress}>
+        <Text style={style.logoutText}>{buttonLabel}</Text>
       </TouchableOpacity>
     </View>
   );
