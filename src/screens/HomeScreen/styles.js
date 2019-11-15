@@ -44,7 +44,7 @@ export const styles = StyleSheet.create({
     marginBottom: 30,
   },
   regionView: {
-    flex: 1,
+    width: widthPercentageToDP(40),
     backgroundColor: colors.WHITE,
     marginEnd: 5,
   },
@@ -71,7 +71,7 @@ export const styles = StyleSheet.create({
     top: -7,
   },
   filterView: {
-    flex: 1,
+    width: widthPercentageToDP(40),
     marginStart: 5,
     backgroundColor: colors.WHITE,
   },
@@ -87,5 +87,9 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     color: colors.DARKGRAY,
     fontSize: RFPercentage(3),
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
 });

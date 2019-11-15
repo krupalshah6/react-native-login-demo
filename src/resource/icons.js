@@ -8,4 +8,6 @@ export const icon = {
   EyeShow: require('../assets/images/show.png'),
   EyeClose: require('../assets/images/eyeclose.png'),
   THEATER: require('../assets/images/openMic/Banner.png'),
+  PLACEONE: require('../assets/images/openMic/places/1.jpg'),
+  PLACETWO: require('../assets/images/openMic/places/2.jpg'),
 };

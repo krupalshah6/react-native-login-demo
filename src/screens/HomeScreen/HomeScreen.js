@@ -9,16 +9,16 @@ import toggleMenu from '../../assets/images/openMic/icon/menu-white.png';
 import SideMenu from 'react-native-side-menu';
 //menu
 import MainMenu from '../../components/menu/SideMenu';
-import AsyncStorage from '@react-native-community/async-storage';
 import strings from '../../resource/string';
 import {icon} from '../../resource/icons';
-import metrics from '../../resource/metrics';
+import RegionModal from './RegionModal';
 
 class HomeScreen extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       isOpen: false,
+      modalVisible: false,
     };
     this.toggleMenu = this.toggleMenu.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
@@ -42,6 +42,10 @@ class HomeScreen extends PureComponent {
   handleSignup() {
     this.props.navigation.replace('SIGNUP');
   }
+
+  toggleModal = () => {
+    this.setState({modalVisible: !this.state.modalVisible});
+  };
 
   render() {
     const menu = (
@@ -75,10 +79,14 @@ class HomeScreen extends PureComponent {
             <Image style={styles.theaterLogo} source={icon.THEATER} />
           </View>
           <View style={styles.filterButton}>
-            <TouchableOpacity style={styles.regionView}>
+            <TouchableOpacity
+              style={styles.regionView}
+              onPress={this.toggleModal}>
               <View style={styles.boxMain}>
                 <View style={styles.boxView}>
-                  <Text style={styles.regionValueText}>Bridgeport Gloucester</Text>
+                  <Text style={styles.regionValueText}>
+                    Bridgeport Gloucester
+                  </Text>
                 </View>
                 <Text style={styles.regionText}>{strings.BTN_REGION}</Text>
               </View>
@@ -90,6 +98,11 @@ class HomeScreen extends PureComponent {
             </TouchableOpacity>
           </View>
         </View>
+        <RegionModal
+          modalVisible={this.state.modalVisible}
+          toggleModal={this.toggleModal}
+        />
+        {this.state.modalVisible && <View style={styles.overlay} />}
       </SideMenu>
     );
   }
