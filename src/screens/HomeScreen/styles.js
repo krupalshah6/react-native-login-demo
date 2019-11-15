@@ -4,6 +4,7 @@ import {
   widthPercentageToDP,
   heightPercentageToDP,
 } from 'react-native-responsive-screen';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 
 export const styles = StyleSheet.create({
   container: {
@@ -44,10 +45,47 @@ export const styles = StyleSheet.create({
   },
   regionView: {
     flex: 1,
+    backgroundColor: colors.WHITE,
+    marginEnd: 5,
+  },
+  boxMain: {
+    alignItems: 'center',
+  },
+  boxView: {
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: colors.BG_GRAY,
     padding: 10,
+  },
+  regionValueText: {
+    color: colors.DARKGRAY,
+    fontSize: RFPercentage(3),
+    textAlign: 'center',
+  },
+  regionText: {
+    textAlign: 'center',
+    color: colors.DARKGRAY,
+    fontSize: RFPercentage(2),
+    backgroundColor: colors.WHITE,
+    position: 'absolute',
+    top: -7,
   },
   filterView: {
     flex: 1,
+    marginStart: 5,
+    backgroundColor: colors.WHITE,
+  },
+  filterViewBox: {
     padding: 10,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: colors.BG_GRAY,
+    // height: 40,
+    alignItems: 'center',
+  },
+  filterText: {
+    textAlign: 'center',
+    color: colors.DARKGRAY,
+    fontSize: RFPercentage(3),
   },
 });

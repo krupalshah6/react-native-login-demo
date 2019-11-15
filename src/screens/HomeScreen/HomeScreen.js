@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {View, Image, TouchableOpacity, Button} from 'react-native';
+import {View, Image, TouchableOpacity, Button, Text} from 'react-native';
 import {styles} from './styles';
 //images
 import micLogo from '../../assets/images/logoMain.png';
@@ -75,12 +75,19 @@ class HomeScreen extends PureComponent {
             <Image style={styles.theaterLogo} source={icon.THEATER} />
           </View>
           <View style={styles.filterButton}>
-            <View style={styles.regionView}>
-              <Button title="Change Region" />
-            </View>
-            <View style={styles.filterView}>
-              <Button title="Apply Filter" />
-            </View>
+            <TouchableOpacity style={styles.regionView}>
+              <View style={styles.boxMain}>
+                <View style={styles.boxView}>
+                  <Text style={styles.regionValueText}>Bridgeport Gloucester</Text>
+                </View>
+                <Text style={styles.regionText}>{strings.BTN_REGION}</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.filterView}>
+              <View style={styles.filterViewBox}>
+                <Text style={styles.filterText}>{strings.BTN_FILTER}</Text>
+              </View>
+            </TouchableOpacity>
           </View>
         </View>
       </SideMenu>

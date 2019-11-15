@@ -9,5 +9,8 @@ const colors = {
   DARKGRAY: '#1e1e1e',
   LOGOUT: '#ffffff80',
   LIGHTGRAY: '#F5F5F5',
+  GREEN: '#008f68',
+  BG_GRAY: '#D3D3D3',
+
 };
 export default colors;

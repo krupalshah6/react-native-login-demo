@@ -25,6 +25,8 @@ const strings = {
   RESENDMAILTEXT2: 'Confirm your email address.',
   SENDMAIL: 'RE SEND MAIL',
   FOOTER_SENDMAIL: 'If you never received an email from us, there’s a few places the email may have landed: Please check your Spam, junk, and bulk mail folders: Sometimes our emails are blocked or filtered as spam by certain email providers or internet service providers (ISPs). You may also click the Resend Mail button above.', 
+  BTN_REGION: 'Change Region',
+  BTN_FILTER: 'Apply Filter',
 };
 
 export default strings;
