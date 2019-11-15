@@ -30,10 +30,15 @@ class SignupScreen extends PureComponent {
       isOpen: false,
       fname: '',
       modalVisible: false,
+      showPassword: true,
+      showPasswordConfirm: true,
     };
     this.toggleMenu = this.toggleMenu.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
     this.handleFirstName = this.handleFirstName.bind(this);
+    this.toggleSwitch = this.toggleSwitch.bind(this);
+    this.toggleSwitchConfirm = this.toggleSwitchConfirm.bind(this);
+    this.handleHome = this.handleHome.bind(this);
   }
   toggleMenu() {
     this.setState({
@@ -45,12 +50,6 @@ class SignupScreen extends PureComponent {
     this.setState({isOpen});
   }
 
-  handleLogin() {
-    this.setState({isOpen: false}, () => {
-      this.props.navigation.navigate('LOGIN');
-    });
-  }
-
   handleFirstName(fname) {
     console.log('fname', fname);
   }
@@ -59,13 +58,35 @@ class SignupScreen extends PureComponent {
     this.setState({modalVisible: !this.state.modalVisible});
   };
 
+  toggleSwitch() {
+    this.setState({showPassword: !this.state.showPassword});
+  }
+
+  toggleSwitchConfirm() {
+    this.setState({showPasswordConfirm: !this.state.showPasswordConfirm});
+  }
+
+  handleLogin() {
+    this.setState({isOpen: false}, () => {
+      this.props.navigation.replace('LOGIN');
+    });
+  }
+
+  handleHome() {
+    this.setState({isOpen: false}, () => {
+      this.props.navigation.replace('Home');
+    });
+  }
+
   render() {
     const menu = (
       <MainMenu
         navigator={this.props.navigation}
         onPress={this.toggleMenu}
-        buttonLabel={strings.LOGIN}
-        onMethodPress={this.handleLogin}
+        buttonLabel={strings.HOME}
+        onMethodPress={this.handleHome}
+        buttonLabelTwo={strings.LOGIN}
+        onMethodPressTwo={this.handleLogin}
       />
     );
     const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -83,6 +104,9 @@ class SignupScreen extends PureComponent {
       password: Yup.string()
         .min(6, 'Password must be at least 6 characters')
         .required('Please enter password'),
+      passwordConfirmation: Yup.string()
+        .oneOf([Yup.ref('password')], 'Passwords are not the same!')
+        .required('Please enter confirm password'),
       contactNo: Yup.string()
         .matches(phoneRegExp, 'Contact number is not valid')
         .required('Please enter contact number'),
@@ -117,6 +141,7 @@ class SignupScreen extends PureComponent {
                   lName: '',
                   email: '',
                   password: '',
+                  passwordConfirmation: '',
                   contactNo: '',
                 }}
                 validationSchema={validationSchema}
@@ -151,15 +176,57 @@ class SignupScreen extends PureComponent {
                       returnKeyType="next"
                       autoCapitalize="none"
                     />
-                    <FormTypeText
-                      value={values.password}
-                      onChangeText={handleChange('password')}
-                      onBlur={handleBlur('password')}
-                      placeholder={strings.PASSWORDTEXT}
-                      error={errors.password}
-                      returnKeyType="next"
-                      secureTextEntry={true}
-                    />
+                    <View style={styles.passwordView}>
+                      <View style={styles.passwordsecondView}>
+                        <FormTypeText
+                          value={values.password}
+                          onChangeText={handleChange('password')}
+                          onBlur={handleBlur('password')}
+                          placeholder={strings.PASSWORDTEXT}
+                          error={errors.password}
+                          returnKeyType="next"
+                          secureTextEntry={this.state.showPassword}
+                        />
+                      </View>
+                      <TouchableOpacity
+                        style={styles.switchView}
+                        onPress={this.toggleSwitch}>
+                        <Image
+                          style={styles.eyeImage}
+                          source={
+                            this.state.showPassword
+                              ? icon.EyeShow
+                              : icon.EyeClose
+                          }
+                        />
+                      </TouchableOpacity>
+                    </View>
+                    <View style={styles.passwordView}>
+                      <View style={styles.passwordsecondView}>
+                        <FormTypeText
+                          value={values.passwordConfirmation}
+                          onChangeText={handleChange('passwordConfirmation')}
+                          onBlur={handleBlur('passwordConfirmation')}
+                          placeholder={strings.CONPASSWORDTEXT}
+                          error={errors.passwordConfirmation}
+                          returnKeyType="passwordConfirmation"
+                          secureTextEntry={this.state.showPasswordConfirm}
+                        />
+                        <TouchableOpacity
+                          style={styles.switchView}
+                          onPress={this.toggleSwitchConfirm}>
+                          <Image
+                            style={styles.eyeImage}
+                            source={
+                              this.state.showPasswordConfirm
+                                ? icon.EyeShow
+                                : icon.EyeClose
+                            }
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+
                     <FormTypeText
                       value={values.contactNo}
                       onChangeText={handleChange('contactNo')}

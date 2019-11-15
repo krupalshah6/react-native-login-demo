@@ -1,13 +1,14 @@
 const strings = {
   LOGINHEADING: 'Welcome To Login Screen',
   LOGIN: 'LOG IN',
+  SIGNUP: 'SIGN UP',
+  HOME: 'HOME',
   EMAIL: 'Email',
   PASSWORD: 'Password',
   EMAILREQ: 'Enter Valid Email',
   PASSREQ: 'Enter Password',
   NO_INTERNET_CONNECTION: 'No Internet Connection',
   FORGOT_PASSWORD: 'Forgot Password?',
-  SIGNUP: 'SIGN UP',
   SIGNUP_SMALL: 'Sign Up',
   LOGIN_SMALL: 'Login and Post your mic...',
   SIGNUPTEXT:
@@ -17,6 +18,7 @@ const strings = {
   LASTNAME: 'Last Name *',
   EMAILTEXT: 'Email Address *',
   PASSWORDTEXT: 'Password *',
+  CONPASSWORDTEXT: 'Confirm Password *',
   CONTACTNO: 'Contact Number *',
   RESENDMAILTEXT:
     'Congratulation! Welcome in Open Mic List.We sent you a link to ',

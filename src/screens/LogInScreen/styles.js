@@ -77,4 +77,8 @@ export const styles = StyleSheet.create({
     end: 0,
     margin: 3,
   },
+  eyeImage: {
+    height: 30,
+    width: 30,
+  },
 });

@@ -7,4 +7,5 @@ export const icon = {
   EMAIL: require('../assets/images/openMic/email.png'),
   EyeShow: require('../assets/images/show.png'),
   EyeClose: require('../assets/images/eyeclose.png'),
+  THEATER: require('../assets/images/openMic/Banner.png'),
 };

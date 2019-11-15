@@ -44,6 +44,7 @@ class LoginScreen extends PureComponent {
     this.handleSignUp = this.handleSignUp.bind(this);
     this.handleFirstName = this.handleFirstName.bind(this);
     this.toggleSwitch = this.toggleSwitch.bind(this);
+    this.handleHome = this.handleHome.bind(this);
   }
 
   componentDidMount() {
@@ -70,7 +71,7 @@ class LoginScreen extends PureComponent {
 
   handleSignUp() {
     this.setState({isOpen: false}, () => {
-      this.props.navigation.navigate('SIGNUP');
+      this.props.navigation.replace('SIGNUP');
     });
   }
 
@@ -82,13 +83,21 @@ class LoginScreen extends PureComponent {
     this.setState({showPassword: !this.state.showPassword});
   }
 
+  handleHome() {
+    this.setState({isOpen: false}, () => {
+      this.props.navigation.replace('Home');
+    });
+  }
+
   render() {
     const menu = (
       <MainMenu
         navigator={this.props.navigation}
         onPress={this.toggleMenu}
-        buttonLabel={strings.SIGNUP}
-        onMethodPress={this.handleSignUp}
+        buttonLabel={strings.HOME}
+        onMethodPress={this.handleHome}
+        buttonLabelTwo={strings.SIGNUP}
+        onMethodPressTwo={this.handleSignUp}
       />
     );
     const validationSchema = Yup.object().shape({
@@ -182,7 +191,7 @@ class LoginScreen extends PureComponent {
                         style={styles.switchView}
                         onPress={this.toggleSwitch}>
                         <Image
-                          style={{width: 30, height: 30}}
+                          style={styles.eyeImage}
                           source={
                             this.state.showPassword
                               ? icon.EyeShow

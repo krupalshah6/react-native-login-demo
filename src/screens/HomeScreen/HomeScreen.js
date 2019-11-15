@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {View, Image, TouchableOpacity} from 'react-native';
+import {View, Image, TouchableOpacity, Button} from 'react-native';
 import {styles} from './styles';
 //images
 import micLogo from '../../assets/images/logoMain.png';
@@ -11,6 +11,8 @@ import SideMenu from 'react-native-side-menu';
 import MainMenu from '../../components/menu/SideMenu';
 import AsyncStorage from '@react-native-community/async-storage';
 import strings from '../../resource/string';
+import {icon} from '../../resource/icons';
+import metrics from '../../resource/metrics';
 
 class HomeScreen extends PureComponent {
   constructor(props) {
@@ -19,7 +21,8 @@ class HomeScreen extends PureComponent {
       isOpen: false,
     };
     this.toggleMenu = this.toggleMenu.bind(this);
-    this.handleLogout = this.handleLogout.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
+    this.handleSignup = this.handleSignup.bind(this);
   }
 
   toggleMenu() {
@@ -32,9 +35,12 @@ class HomeScreen extends PureComponent {
     this.setState({isOpen});
   }
 
-  handleLogout() {
-    AsyncStorage.clear();
+  handleLogin() {
     this.props.navigation.replace('LOGIN');
+  }
+
+  handleSignup() {
+    this.props.navigation.replace('SIGNUP');
   }
 
   render() {
@@ -42,8 +48,10 @@ class HomeScreen extends PureComponent {
       <MainMenu
         navigator={this.props.navigation}
         onPress={this.toggleMenu}
-        buttonLabel={strings.LOGOUT}
-        onMethodPress={this.handleLogout}
+        buttonLabel={strings.LOGIN}
+        onMethodPress={this.handleLogin}
+        onMethodPressTwo={this.handleSignup}
+        buttonLabelTwo={strings.SIGNUP}
       />
     );
     return (
@@ -62,6 +70,17 @@ class HomeScreen extends PureComponent {
               onPress={this.toggleMenu}>
               <Image source={toggleMenu} />
             </TouchableOpacity>
+          </View>
+          <View style={styles.theaterView}>
+            <Image style={styles.theaterLogo} source={icon.THEATER} />
+          </View>
+          <View style={styles.filterButton}>
+            <View style={styles.regionView}>
+              <Button title="Change Region" />
+            </View>
+            <View style={styles.filterView}>
+              <Button title="Apply Filter" />
+            </View>
           </View>
         </View>
       </SideMenu>

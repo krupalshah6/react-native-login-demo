@@ -38,11 +38,7 @@ class LoaderScreen extends PureComponent {
     });
   };
   render() {
-    return (
-      <View style={Styles.container}>
-        <Image style={Styles.logo} source={icon.WHITELOGO} />
-      </View>
-    );
+    return <View style={Styles.container} />;
   }
 }
 
@@ -70,11 +66,14 @@ const MainNavigator = createStackNavigator(
   {initialRouteName: 'Home'},
 );
 
-const LoginNavigator = createStackNavigator({
-  LOGIN: {screen: LoginScreen, navigationOptions: {header: null}},
-  Home: {screen: HomeScreen, navigationOptions: {header: null}},
-  SIGNUP: {screen: SignupScreen, navigationOptions: {header: null}},
-});
+const LoginNavigator = createStackNavigator(
+  {
+    LOGIN: {screen: LoginScreen, navigationOptions: {header: null}},
+    Home: {screen: HomeScreen, navigationOptions: {header: null}},
+    SIGNUP: {screen: SignupScreen, navigationOptions: {header: null}},
+  },
+  {initialRouteName: 'Home'},
+);
 
 const switchNavigator = createSwitchNavigator(
   {
