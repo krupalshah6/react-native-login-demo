@@ -28,6 +28,8 @@ const strings = {
   BTN_REGION: 'Change Region',
   BTN_FILTER: 'Apply Filter',
   REGINTEXT: 'Register and Post your mic...',
+  MICTYPE: 'Select Mic Type',
+  SEARCHMIC: 'Quick Search',
 };
 
 export default strings;

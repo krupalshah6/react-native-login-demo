@@ -4,7 +4,7 @@ import {
   widthPercentageToDP,
   heightPercentageToDP,
 } from 'react-native-responsive-screen';
-import { RFPercentage } from 'react-native-responsive-fontsize';
+import {RFPercentage} from 'react-native-responsive-fontsize';
 
 export const styles = StyleSheet.create({
   container: {
@@ -43,7 +43,7 @@ export const styles = StyleSheet.create({
     marginBottom: 30,
   },
   regionView: {
-    width: widthPercentageToDP(40),
+    flex: 1,
     backgroundColor: colors.WHITE,
     marginEnd: 5,
   },
@@ -70,7 +70,7 @@ export const styles = StyleSheet.create({
     top: -7,
   },
   filterView: {
-    width: widthPercentageToDP(40),
+    flex: 1,
     marginStart: 5,
     backgroundColor: colors.WHITE,
   },

@@ -7,6 +7,7 @@ import {
   ScrollView,
   Image,
   Picker,
+  TextInput,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {RFPercentage} from 'react-native-responsive-fontsize';
@@ -16,22 +17,30 @@ import {
 } from 'react-native-responsive-screen';
 import colors from '../../resource/colors';
 import {icon} from '../../resource/icons';
+import strings from '../../resource/string';
+import ModalSelector from 'react-native-modal-selector'
 
 class FilterModal extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       micType: '',
+      searchValue: '',
     };
     this.selectedMicType = this.selectedMicType.bind(this);
+    this.handleSearchValue = this.handleSearchValue.bind(this);
     this.micTypeOptions = [
-      {label: 'No Drink Minimum', value: 'No Drink Minimum'},
-      {label: 'Drink Minimum', value: 'Drink Minimum'},
+      {key: 'No Drink Minimum', label: 'No Drink Minimum'},
+      {key: 'Drink Minimum', label: 'Drink Minimum'},
     ];
   }
 
   selectedMicType(value) {
     this.setState({micType: value});
+  }
+
+  handleSearchValue(value) {
+    this.setState({searchValue: value});
   }
 
   handleReSendMail() {}
@@ -50,20 +59,22 @@ class FilterModal extends PureComponent {
               />
             </View>
             <View style={styles.micTypeView}>
-              <Picker
-                selectedValue={this.state.micType}
-                onValueChange={this.selectedMicType}
-                style={styles.micPickerStyle}>
-                {this.micTypeOptions.map((data, index) => {
-                  return (
-                    <Picker.Item
-                      key={index}
-                      label={data.label}
-                      value={data.label}
-                    />
-                  );
-                })}
-              </Picker>
+              <Text style={styles.micPickerText}>{strings.MICTYPE}</Text>
+              <ModalSelector
+                data={this.micTypeOptions}
+                initValue={strings.MICTYPE}
+                onChange={this.selectedMicType}
+              />
+            </View>
+            <View style={styles.micSearchView}>
+              <Text style={styles.searchText}>{strings.SEARCHMIC}</Text>
+              <View style={styles.searchInputView}>
+                <TextInput
+                  value={this.state.searchValue}
+                  onChangeText={this.handleSearchValue}
+                  style={styles.searchInput}
+                />
+              </View>
             </View>
           </ScrollView>
           <View style={styles.rowView}>
@@ -123,9 +134,26 @@ let styles = StyleSheet.create({
     width: widthPercentageToDP(80),
     height: heightPercentageToDP(23),
   },
-  micTypeView: {},
-  micPickerStyle: {
+  micTypeView: {
     margin: 20,
+  },
+  micPickerText: {
+    fontSize: 20,
+  },
+  micSearchView: {
+    margin: 20,
+  },
+  searchText: {
+    fontSize: 20,
+  },
+  searchInputView: {
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: colors.BG_GRAY,
+  },
+  searchInput: {
+    width: widthPercentageToDP(80),
+    padding: 10,
   },
 });
 
