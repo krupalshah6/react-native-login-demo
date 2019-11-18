@@ -37,7 +37,6 @@ export const styles = StyleSheet.create({
   },
   filterButton: {
     flexDirection: 'row',
-    flex: 1,
     marginTop: 30,
     marginStart: 20,
     marginEnd: 20,

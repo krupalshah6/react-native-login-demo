@@ -12,6 +12,7 @@ import MainMenu from '../../components/menu/SideMenu';
 import strings from '../../resource/string';
 import {icon} from '../../resource/icons';
 import RegionModal from './RegionModal';
+import FilterModal from './FilterModal';
 
 class HomeScreen extends PureComponent {
   constructor(props) {
@@ -19,6 +20,7 @@ class HomeScreen extends PureComponent {
     this.state = {
       isOpen: false,
       modalVisible: false,
+      filterModalVisible: false,
     };
     this.toggleMenu = this.toggleMenu.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
@@ -45,6 +47,10 @@ class HomeScreen extends PureComponent {
 
   toggleModal = () => {
     this.setState({modalVisible: !this.state.modalVisible});
+  };
+
+  filterToggleModal = () => {
+    this.setState({filterModalVisible: !this.state.filterModalVisible});
   };
 
   render() {
@@ -91,7 +97,9 @@ class HomeScreen extends PureComponent {
                 <Text style={styles.regionText}>{strings.BTN_REGION}</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.filterView}>
+            <TouchableOpacity
+              style={styles.filterView}
+              onPress={this.filterToggleModal}>
               <View style={styles.filterViewBox}>
                 <Text style={styles.filterText}>{strings.BTN_FILTER}</Text>
               </View>
@@ -101,6 +109,10 @@ class HomeScreen extends PureComponent {
         <RegionModal
           modalVisible={this.state.modalVisible}
           toggleModal={this.toggleModal}
+        />
+        <FilterModal
+          modalVisible={this.state.filterModalVisible}
+          toggleModal={this.filterToggleModal}
         />
         {this.state.modalVisible && <View style={styles.overlay} />}
       </SideMenu>
