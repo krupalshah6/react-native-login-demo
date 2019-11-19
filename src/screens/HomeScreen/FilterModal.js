@@ -12,7 +12,7 @@ import {
 import Modal from 'react-native-modal';
 import {icon} from '../../resource/icons';
 import strings from '../../resource/string';
-import ModalSelector from 'react-native-modal-selector'
+import ModalSelector from 'react-native-modal-selector';;
 import {styles} from './FilterModalStyle';
 
 class FilterModal extends PureComponent {
@@ -71,12 +71,14 @@ class FilterModal extends PureComponent {
               </View>
             </View>
             <View style={styles.applyView}>
-            <TouchableOpacity
-              style={styles.buttonStyle}
-              // onPress={handleSubmit}
+              <TouchableOpacity
+                style={styles.buttonStyle}
+                // onPress={handleSubmit}
               >
-              <Text style={styles.textSignUp}>{strings.BTN_FILTER_APPLY}</Text>
-            </TouchableOpacity>
+                <Text style={styles.textSignUp}>
+                  {strings.BTN_FILTER_APPLY}
+                </Text>
+              </TouchableOpacity>
             </View>
           </ScrollView>
           <View style={styles.rowView}>
@@ -91,6 +93,5 @@ class FilterModal extends PureComponent {
     );
   }
 }
-
 
 export default FilterModal;

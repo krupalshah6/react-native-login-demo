@@ -1,5 +1,12 @@
 import React, {PureComponent} from 'react';
-import {View, Image, TouchableOpacity, Button, Text, ScrollView} from 'react-native';
+import {
+  View,
+  Image,
+  TouchableOpacity,
+  Button,
+  Text,
+  ScrollView,
+} from 'react-native';
 import {styles} from './styles';
 //images
 import micLogo from '../../assets/images/logoMain.png';
@@ -13,6 +20,9 @@ import strings from '../../resource/string';
 import {icon} from '../../resource/icons';
 import RegionModal from './RegionModal';
 import FilterModal from './FilterModal';
+import colors from '../../resource/colors';
+import Mic from '../../components/mic/Mic';
+import AsyncStorage from '@react-native-community/async-storage';
 
 class HomeScreen extends PureComponent {
   constructor(props) {
@@ -22,6 +32,7 @@ class HomeScreen extends PureComponent {
       modalVisible: false,
       filterModalVisible: false,
       vieWDays: false,
+      isAuthenticate: false,
       days: [
         {id: 0, day: 'Saturday', selected: true},
         {id: 1, day: 'Sunday', selected: false},
@@ -35,6 +46,26 @@ class HomeScreen extends PureComponent {
     this.toggleMenu = this.toggleMenu.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
     this.handleSignup = this.handleSignup.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
+    this.handleDashboard = this.handleDashboard.bind(this);
+  }
+
+  componentDidMount() {
+    this.checkAuth();
+  }
+
+  checkAuth() {
+    AsyncStorage.getItem('user').then(data => {
+      if (data) {
+        if (data.token !== '') {
+          this.setState({isAuthenticate: true});
+        } else {
+          this.setState({isAuthenticate: false});
+        }
+      } else {
+        this.setState({isAuthenticate: false});
+      }
+    });
   }
 
   toggleMenu() {
@@ -51,8 +82,17 @@ class HomeScreen extends PureComponent {
     this.props.navigation.replace('LOGIN');
   }
 
+  handleLogout() {
+    this.setState({isAuthenticate: false});
+    AsyncStorage.clear();
+  }
+
   handleSignup() {
     this.props.navigation.replace('SIGNUP');
+  }
+
+  handleDashboard() {
+    this.props.navigation.replace('DashBoard');
   }
 
   toggleModal = () => {
@@ -63,48 +103,63 @@ class HomeScreen extends PureComponent {
     this.setState({filterModalVisible: !this.state.filterModalVisible});
   };
 
-  handleDayNavigation = (item) => {
-    console.log('item', item)
+  handleDayNavigation = item => {
+    console.log('item', item);
     let days = [...this.state.days];
-    days.map((data) => {
+    days.map(data => {
       if (data.id === item.id) {
-         data.selected = true;
+        data.selected = true;
       } else {
-         data.selected = false;
+        data.selected = false;
       }
       return;
     });
-    this.setState({ days: days });
-  }
+    this.setState({days: days});
+  };
 
   handleViewDays = () => {
-  this.setState({ vieWDays: !this.state.vieWDays}, () => {
-    if (this.state.vieWDays === false) {
-      let days = [...this.state.days];
-      days.map((data) => {
-        if (data.id === 0) {
-          data.selected = true
-        } else {
-          data.selected = false
-        }
-        return;
-      });
-      this.setState({ days: days });
-    }
-  });
-  }
+    this.setState({vieWDays: !this.state.vieWDays}, () => {
+      if (this.state.vieWDays === false) {
+        let days = [...this.state.days];
+        days.map(data => {
+          if (data.id === 0) {
+            data.selected = true;
+          } else {
+            data.selected = false;
+          }
+          return;
+        });
+        this.setState({days: days});
+      }
+    });
+  };
 
   render() {
-    const menu = (
-      <MainMenu
-        navigator={this.props.navigation}
-        onPress={this.toggleMenu}
-        buttonLabel={strings.LOGIN}
-        onMethodPress={this.handleLogin}
-        onMethodPressTwo={this.handleSignup}
-        buttonLabelTwo={strings.SIGNUP}
-      />
-    );
+    var menu;
+    if (this.state.isAuthenticate === false) {
+      menu = (
+        <MainMenu
+          navigator={this.props.navigation}
+          onPress={this.toggleMenu}
+          buttonLabel={strings.LOGIN}
+          onMethodPress={this.handleLogin}
+          onMethodPressTwo={this.handleSignup}
+          buttonLabelTwo={strings.SIGNUP}
+        />
+      );
+    } else {
+      menu = (
+        <MainMenu
+          navigator={this.props.navigation}
+          onPress={this.toggleMenu}
+          buttonLabelTwo={strings.LOGOUT}
+          onMethodPressTwo={this.handleLogout}
+          onMethodPress={this.handleDashboard}
+          buttonLabel={strings.DASHBOARD}
+        />
+      );
+    }
+
     return (
       <SideMenu
         menu={this.state.isOpen && menu}
@@ -146,35 +201,77 @@ class HomeScreen extends PureComponent {
               </View>
             </TouchableOpacity>
           </View>
-          <View style={styles.tabButtonMainView}>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator = {false}> 
-          {this.state.days.map((data, index) => {
-            if (this.state.vieWDays === false) {
-              if (data.id <= 1) {
-                return  <View key={data.id}  style={[styles.buttonView, data.selected? styles.bActive : styles.bInactive]}>
-              <TouchableOpacity onPress={() => this.handleDayNavigation(data)}>
-                <Text style={[styles.tabButtonText, data.selected? styles.active:styles.inactive]}>{data.day}</Text>
-              </TouchableOpacity>
+          <ScrollView>
+            <View style={{backgroundColor: colors.BG_MAIN, flex: 1}}>
+              <View style={styles.tabButtonMainView}>
+                <ScrollView
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}>
+                  {this.state.days.map((data, index) => {
+                    if (this.state.vieWDays === false) {
+                      if (data.id <= 1) {
+                        return (
+                          <TouchableOpacity
+                            key={data.id}
+                            onPress={() => this.handleDayNavigation(data)}>
+                            <View
+                              style={[
+                                styles.buttonView,
+                                data.selected
+                                  ? styles.bActive
+                                  : styles.bInactive,
+                              ]}>
+                              <Text
+                                style={[
+                                  styles.tabButtonText,
+                                  data.selected
+                                    ? styles.active
+                                    : styles.inactive,
+                                ]}>
+                                {data.day}
+                              </Text>
+                            </View>
+                          </TouchableOpacity>
+                        );
+                      }
+                    } else {
+                      return (
+                        <TouchableOpacity
+                          key={data.id}
+                          onPress={() => this.handleDayNavigation(data)}>
+                          <View
+                            style={[
+                              styles.buttonView,
+                              data.selected ? styles.bActive : styles.bInactive,
+                            ]}>
+                            <Text
+                              style={[
+                                styles.tabButtonText,
+                                data.selected ? styles.active : styles.inactive,
+                              ]}>
+                              {data.day}
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
+                      );
+                    }
+                  })}
+                </ScrollView>
+              </View>
+              <View style={styles.weekDaysView}>
+                <View style={styles.btn_View}>
+                  <TouchableOpacity onPress={this.handleViewDays}>
+                    <Text style={styles.weekDaysText}>
+                      {this.state.vieWDays
+                        ? strings.HIDE_WEEK_DAYS
+                        : strings.WEEK_DAYS}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <Mic />
             </View>
-              } 
-            } else {
-              return  <View key={data.id}   style={[styles.buttonView, data.selected? styles.bActive : styles.bInactive]}>
-              <TouchableOpacity onPress={() => this.handleDayNavigation(data)}>
-                <Text style={[styles.tabButtonText, data.selected? styles.active:styles.inactive]}>{data.day}</Text>
-              </TouchableOpacity>
-            </View>
-            }
-              
-          })}
           </ScrollView>
-          </View>
-          <View style={styles.weekDaysView}>
-          <View style={styles.btn_View}>
-            <TouchableOpacity onPress={this.handleViewDays}>
-              <Text style={styles.weekDaysText}>{this.state.vieWDays? strings.HIDE_WEEK_DAYS:strings.WEEK_DAYS}</Text>
-            </TouchableOpacity>
-          </View>
-          </View>
         </View>
         <RegionModal
           modalVisible={this.state.modalVisible}

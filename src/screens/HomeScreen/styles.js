@@ -96,12 +96,12 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   buttonView: {
-    borderRadius: (5),
+    borderRadius: 5,
     padding: 5,
     margin: 5,
     borderStyle: 'solid',
     overflow: 'hidden',
-    borderBottomWidth: 2, 
+    borderBottomWidth: 2,
   },
   bActive: {
     borderColor: colors.DODGER_BLUE,
@@ -110,11 +110,11 @@ export const styles = StyleSheet.create({
     borderColor: colors.BTN_TAB_GRAY,
   },
   tabButtonText: {
-    fontSize: 20,
+    fontSize: RFPercentage(2.2),
   },
   active: {
     color: colors.DODGER_BLUE,
-  }, 
+  },
   inactive: {
     color: colors.BTN_TAB_GRAY,
   },
@@ -131,8 +131,8 @@ export const styles = StyleSheet.create({
   },
   weekDaysText: {
     color: colors.DODGER_BLUE,
-    fontSize: 20,
+    fontSize: RFPercentage(2.2),
     padding: 10,
     textAlign: 'center',
-  }
+  },
 });

@@ -159,7 +159,7 @@ class LoginScreen extends PureComponent {
                       showMessage(message);
                     } else if (status === true) {
                       AsyncStorage.setItem('user', JSON.stringify(data));
-                      this.props.navigation.replace('Home');
+                      this.props.navigation.replace('DashBoard');
                     }
                   });
                 }}>

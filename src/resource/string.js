@@ -33,6 +33,7 @@ const strings = {
   BTN_FILTER_APPLY: 'Apply Filter',
   WEEK_DAYS: 'VIEW OTHER WEEK DAYS',
   HIDE_WEEK_DAYS: 'HIDE OTHER WEEK DAYS',
+  DASHBOARD: 'DASHBOARD',
 };
 
 export default strings;

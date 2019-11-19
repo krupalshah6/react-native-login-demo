@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import LoginScreen from './LogInScreen/LoginScreen';
 import HomeScreen from './HomeScreen/HomeScreen';
 import SignupScreen from './SignUpScreen/SignupScreen';
-
+import DashBoard from './DashBoard/DashBoard';
 /**
  * @class AppScreen
  */
@@ -63,8 +63,9 @@ const MainNavigator = createStackNavigator(
     LOGIN: {screen: LoginScreen, navigationOptions: {header: null}},
     Home: {screen: HomeScreen, navigationOptions: {header: null}},
     SIGNUP: {screen: SignupScreen, navigationOptions: {header: null}},
+    DashBoard: {screen: DashBoard, navigationOptions: {header: null}},
   },
-  {initialRouteName: 'Home'},
+  {initialRouteName: 'DashBoard'},
 );
 
 const LoginNavigator = createStackNavigator(
@@ -72,6 +73,7 @@ const LoginNavigator = createStackNavigator(
     LOGIN: {screen: LoginScreen, navigationOptions: {header: null}},
     Home: {screen: HomeScreen, navigationOptions: {header: null}},
     SIGNUP: {screen: SignupScreen, navigationOptions: {header: null}},
+    DashBoard: {screen: DashBoard, navigationOptions: {header: null}},
   },
   {initialRouteName: 'Home'},
 );

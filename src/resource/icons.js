@@ -10,4 +10,10 @@ export const icon = {
   THEATER: require('../assets/images/openMic/Banner.png'),
   PLACEONE: require('../assets/images/openMic/places/1.jpg'),
   PLACETWO: require('../assets/images/openMic/places/2.jpg'),
+  MIC: require('../assets/images/openMic/post-img.png'),
+  ICON_CLOCK: require('../assets/images/clock.png'),
+  ICON_LOCATION: require('../assets/images/location.png'),
+  ICON_CONTACT: require('../assets/images/contacts.png'),
+  ICON_MIC: require('../assets/images/mic.png'),
+  MICTWO: require('../assets/images/mic2.jpg'),
 };
