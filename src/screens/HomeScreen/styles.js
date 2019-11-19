@@ -91,4 +91,48 @@ export const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(0,0,0,0.5)',
   },
+  tabButtonMainView: {
+    margin: 20,
+    flexDirection: 'row',
+  },
+  buttonView: {
+    borderRadius: (5),
+    padding: 5,
+    margin: 5,
+    borderStyle: 'solid',
+    overflow: 'hidden',
+    borderBottomWidth: 2, 
+  },
+  bActive: {
+    borderColor: colors.DODGER_BLUE,
+  },
+  bInactive: {
+    borderColor: colors.BTN_TAB_GRAY,
+  },
+  tabButtonText: {
+    fontSize: 20,
+  },
+  active: {
+    color: colors.DODGER_BLUE,
+  }, 
+  inactive: {
+    color: colors.BTN_TAB_GRAY,
+  },
+  weekDaysView: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  btn_View: {
+    backgroundColor: colors.LIGHTGRAY,
+    marginStart: 20,
+    marginEnd: 20,
+    width: widthPercentageToDP(80),
+    borderRadius: 4,
+  },
+  weekDaysText: {
+    color: colors.DODGER_BLUE,
+    fontSize: 20,
+    padding: 10,
+    textAlign: 'center',
+  }
 });

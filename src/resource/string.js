@@ -30,6 +30,9 @@ const strings = {
   REGINTEXT: 'Register and Post your mic...',
   MICTYPE: 'Select Mic Type',
   SEARCHMIC: 'Quick Search',
+  BTN_FILTER_APPLY: 'Apply Filter',
+  WEEK_DAYS: 'VIEW OTHER WEEK DAYS',
+  HIDE_WEEK_DAYS: 'HIDE OTHER WEEK DAYS',
 };
 
 export default strings;

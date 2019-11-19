@@ -11,6 +11,7 @@ const colors = {
   LIGHTGRAY: '#F5F5F5',
   GREEN: '#008f68',
   BG_GRAY: '#D3D3D3',
+  BTN_TAB_GRAY:'#8f8f8f',
 
 };
 export default colors;

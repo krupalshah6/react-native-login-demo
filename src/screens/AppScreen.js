@@ -62,6 +62,7 @@ const MainNavigator = createStackNavigator(
   {
     LOGIN: {screen: LoginScreen, navigationOptions: {header: null}},
     Home: {screen: HomeScreen, navigationOptions: {header: null}},
+    SIGNUP: {screen: SignupScreen, navigationOptions: {header: null}},
   },
   {initialRouteName: 'Home'},
 );
