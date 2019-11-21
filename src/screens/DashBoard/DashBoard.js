@@ -1,22 +1,16 @@
 import React, {PureComponent} from 'react';
-import {
-  View,
-  Image,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-  Text,
-} from 'react-native';
+import {View, Image, TouchableOpacity, ScrollView, Text} from 'react-native';
 import {connect} from 'react-redux';
 import NetInfo from '@react-native-community/netinfo';
+import {styles} from './styles';
 import SideMenu from 'react-native-side-menu';
 import MainMenu from '../../components/menu/SideMenu';
 import strings from '../../resource/string';
 import {icon} from '../../resource/icons';
-import colors from '../../resource/colors';
 import AsyncStorage from '@react-native-community/async-storage';
-import {RFPercentage} from 'react-native-responsive-fontsize';
-
+import MyMic from '../../components/mic/myMic';
+import AccountSettings from '../../components/DashboardComponents/AccountSettings';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';;
 class DashBoard extends PureComponent {
   constructor(props) {
     super(props);
@@ -25,6 +19,12 @@ class DashBoard extends PureComponent {
       userData: {},
       avatar: [],
       profile: '',
+      tabs: [
+        {id: 0, value: strings.DASHBOARD_TAB_ONE, isSelected: true},
+        {id: 1, value: strings.DASHBOARD_TAB_TWO, isSelected: false},
+        {id: 2, value: strings.DASHBOARD_TAB_THREE, isSelected: false},
+        {id: 3, value: strings.DASHBOARD_TAB_FOUR, isSelected: false},
+      ],
     };
     this.toggleMenu = this.toggleMenu.bind(this);
     this.updateMenuState = this.updateMenuState.bind(this);
@@ -115,6 +115,19 @@ class DashBoard extends PureComponent {
     });
   }
 
+  handleTabNavigation = item => {
+    var tabs = [...this.state.tabs];
+    tabs.map(data => {
+      if (data.id === item.id) {
+        data.isSelected = true;
+      } else {
+        data.isSelected = false;
+      }
+      return;
+    });
+    this.setState({tabs: tabs});
+  };
+
   render() {
     const menu = (
       <MainMenu
@@ -144,77 +157,90 @@ class DashBoard extends PureComponent {
               <Image source={icon.TOGGLE} />
             </TouchableOpacity>
           </View>
-          <ScrollView>
-            <View style={styles.containerView}>
-              <View style={styles.profileLogoView}>
-                {profile !== '' ? (
-                  <Image style={styles.profileImage} source={{uri: profile}} />
-                ) : (
-                  <Image
-                    style={styles.defaultImage}
-                    source={icon.PROFILE_DEFAULT}
-                  />
-                )}
+          <KeyboardAwareScrollView enableOnAndroid={true}>
+            <ScrollView>
+              <View style={styles.containerView}>
+                <View style={styles.profileInfoView}>
+                  <View style={styles.profileLogoView}>
+                    {profile !== '' ? (
+                      <Image
+                        style={styles.profileImage}
+                        source={{uri: profile}}
+                      />
+                    ) : (
+                      <Image
+                        style={styles.defaultImage}
+                        source={icon.PROFILE_DEFAULT}
+                      />
+                    )}
+                  </View>
+                  <View style={styles.userNameView}>
+                    <Text style={styles.fname}>{userData.first_name}</Text>
+                    <Text style={styles.lname}>{userData.last_name}</Text>
+                  </View>
+                </View>
+                <View style={styles.dotted} />
+                <View style={styles.infoTextView}>
+                  <Text style={styles.infoText}>{strings.DASHBOARD_LABEL}</Text>
+                </View>
+                <View style={styles.tabMainView}>
+                  <View style={styles.tabButtonRowView}>
+                    <ScrollView
+                      horizontal={true}
+                      showsHorizontalScrollIndicator={false}>
+                      {this.state.tabs.map(item => {
+                        return (
+                          <TouchableOpacity
+                            key={item.id}
+                            onPress={() => this.handleTabNavigation(item)}>
+                            <View
+                              style={[
+                                styles.buttonView,
+                                item.isSelected
+                                  ? styles.bActive
+                                  : styles.bInactive,
+                              ]}>
+                              <Text style={styles.tabButtonText}>
+                                {item.value}
+                              </Text>
+                            </View>
+                          </TouchableOpacity>
+                        );
+                      })}
+                    </ScrollView>
+                  </View>
+                  <View style={styles.tabContentMainView}>
+                    {this.state.tabs.map(item => {
+                      if (item.id === 0 && item.isSelected === true) {
+                        return (
+                          <View key={item.id} style={styles.micBoxView}>
+                            <MyMic currentTab={item.id} />
+                          </View>
+                        );
+                      } else if (item.id === 1 && item.isSelected === true) {
+                        return (
+                          <View key={item.id} style={styles.micBoxView}>
+                            <MyMic currentTab={item.id} />
+                          </View>
+                        );
+                      } else if (item.id === 2 && item.isSelected === true) {
+                        return (
+                          <View key={item.id} style={styles.micBoxView}>
+                            <AccountSettings />
+                          </View>
+                        );
+                      }
+                    })}
+                  </View>
+                </View>
               </View>
-              <View style={styles.userNameView}>
-                <Text style={styles.fname}>{userData.first_name}</Text>
-                <Text style={styles.lname}>{userData.last_name}</Text>
-              </View>
-            </View>
-          </ScrollView>
+            </ScrollView>
+          </KeyboardAwareScrollView>
         </View>
       </SideMenu>
     );
   }
 }
-
-let styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  rowCenter: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.DARKGRAY,
-  },
-  imageView: {
-    flexDirection: 'row',
-    padding: 10,
-  },
-  toggleButton: {
-    flexDirection: 'row',
-    position: 'absolute',
-    right: 0,
-    padding: 20,
-  },
-  containerView: {
-    flexDirection: 'row',
-  },
-  profileLogoView: {
-    margin: 20,
-  },
-  profileImage: {
-    width: 60,
-    height: 60,
-  },
-  defaultImage: {
-    width: 60,
-    height: 60,
-  },
-  userNameView: {
-    flexDirection: 'row',
-    marginTop: 40,
-  },
-  fname: {
-    marginEnd: 10,
-    fontSize: RFPercentage(3),
-    textTransform: 'capitalize',
-  },
-  lname: {
-    fontSize: RFPercentage(3),
-    textTransform: 'capitalize',
-  },
-});
 
 const mapStateToProps = state => ({
   avatar: state.basicReducers.avatar,
