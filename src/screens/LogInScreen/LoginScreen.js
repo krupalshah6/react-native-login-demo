@@ -53,9 +53,14 @@ class LoginScreen extends PureComponent {
     );
   }
 
+  componentWillUnmount() {
+    this._subscription = NetInfo.removeEventListener(
+      this._handleConnectivityChange,
+    );
+  }
+
   _handleConnectivityChange = state => {
     this.setState({isConnected: state.isConnected}, () => {
-      console.log('net', this.state.isConnected);
     });
   };
 
@@ -76,7 +81,6 @@ class LoginScreen extends PureComponent {
   }
 
   handleFirstName(fname) {
-    console.log('fname', fname);
   }
 
   toggleSwitch() {

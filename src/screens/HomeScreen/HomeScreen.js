@@ -23,7 +23,6 @@ import FilterModal from './FilterModal';
 import colors from '../../resource/colors';
 import Mic from '../../components/mic/Mic';
 import AsyncStorage from '@react-native-community/async-storage';
-
 class HomeScreen extends PureComponent {
   constructor(props) {
     super(props);
@@ -104,8 +103,7 @@ class HomeScreen extends PureComponent {
   };
 
   handleDayNavigation = item => {
-    console.log('item', item);
-    let days = [...this.state.days];
+     let days = [...this.state.days];
     days.map(data => {
       if (data.id === item.id) {
         data.selected = true;

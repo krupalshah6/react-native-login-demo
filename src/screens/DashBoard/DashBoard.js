@@ -5,13 +5,17 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  Text,
 } from 'react-native';
+import {connect} from 'react-redux';
+import NetInfo from '@react-native-community/netinfo';
 import SideMenu from 'react-native-side-menu';
 import MainMenu from '../../components/menu/SideMenu';
 import strings from '../../resource/string';
 import {icon} from '../../resource/icons';
 import colors from '../../resource/colors';
 import AsyncStorage from '@react-native-community/async-storage';
+import {RFPercentage} from 'react-native-responsive-fontsize';
 
 class DashBoard extends PureComponent {
   constructor(props) {
@@ -19,6 +23,8 @@ class DashBoard extends PureComponent {
     this.state = {
       isOpen: false,
       userData: {},
+      avatar: [],
+      profile: '',
     };
     this.toggleMenu = this.toggleMenu.bind(this);
     this.updateMenuState = this.updateMenuState.bind(this);
@@ -26,9 +32,38 @@ class DashBoard extends PureComponent {
     this.handleLogout = this.handleLogout.bind(this);
   }
 
-  componentDidMount() {
-    this.checkAuth();
+  static getDerivedStateFromProps(props, state) {
+    if (props.avatar !== state.avatar) {
+      return {
+        avatar: props.avatar,
+      };
+    }
+    return null;
   }
+
+  componentDidMount() {
+    this._subscription = NetInfo.addEventListener(
+      this._handleConnectivityChange,
+    );
+  }
+
+  componentWillUnmount() {
+    this._subscription = NetInfo.removeEventListener(
+      this._handleConnectivityChange,
+    );
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.avatar !== this.props.avatar) {
+      this.getUserProfile();
+    }
+  }
+
+  _handleConnectivityChange = state => {
+    this.setState({isConnected: state.isConnected}, () => {
+      this.checkAuth();
+    });
+  };
 
   checkAuth() {
     AsyncStorage.getItem('user').then(data => {
@@ -43,6 +78,18 @@ class DashBoard extends PureComponent {
         this.setState({isAuthenticate: false});
       }
     });
+  }
+
+  getUserProfile() {
+    const {userData, avatar} = this.state;
+    if (userData) {
+      avatar &&
+        avatar.map(item => {
+          if (userData.profile_avtar === item.id) {
+            this.setState({profile: item.profile_avtar_url});
+          }
+        });
+    }
   }
 
   toggleMenu() {
@@ -69,7 +116,6 @@ class DashBoard extends PureComponent {
   }
 
   render() {
-    console.log('user', this.state.userData);
     const menu = (
       <MainMenu
         navigator={this.props.navigation}
@@ -80,6 +126,7 @@ class DashBoard extends PureComponent {
         onMethodPressTwo={this.handleLogout}
       />
     );
+    const {profile, userData} = this.state;
     return (
       <SideMenu
         menu={this.state.isOpen && menu}
@@ -97,12 +144,25 @@ class DashBoard extends PureComponent {
               <Image source={icon.TOGGLE} />
             </TouchableOpacity>
           </View>
+          <ScrollView>
+            <View style={styles.containerView}>
+              <View style={styles.profileLogoView}>
+                {profile !== '' ? (
+                  <Image style={styles.profileImage} source={{uri: profile}} />
+                ) : (
+                  <Image
+                    style={styles.defaultImage}
+                    source={icon.PROFILE_DEFAULT}
+                  />
+                )}
+              </View>
+              <View style={styles.userNameView}>
+                <Text style={styles.fname}>{userData.first_name}</Text>
+                <Text style={styles.lname}>{userData.last_name}</Text>
+              </View>
+            </View>
+          </ScrollView>
         </View>
-        <ScrollView>
-          <View style={styles.containerView}>
-            <View style={styles.profileLogoView} />
-          </View>
-        </ScrollView>
       </SideMenu>
     );
   }
@@ -128,10 +188,38 @@ let styles = StyleSheet.create({
     padding: 20,
   },
   containerView: {
-    flex: 1,
+    flexDirection: 'row',
   },
   profileLogoView: {
     margin: 20,
   },
+  profileImage: {
+    width: 60,
+    height: 60,
+  },
+  defaultImage: {
+    width: 60,
+    height: 60,
+  },
+  userNameView: {
+    flexDirection: 'row',
+    marginTop: 40,
+  },
+  fname: {
+    marginEnd: 10,
+    fontSize: RFPercentage(3),
+    textTransform: 'capitalize',
+  },
+  lname: {
+    fontSize: RFPercentage(3),
+    textTransform: 'capitalize',
+  },
 });
-export default DashBoard;
+
+const mapStateToProps = state => ({
+  avatar: state.basicReducers.avatar,
+});
+export default connect(
+  mapStateToProps,
+  null,
+)(DashBoard);

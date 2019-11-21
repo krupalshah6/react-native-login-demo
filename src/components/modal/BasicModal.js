@@ -17,7 +17,6 @@ class BasicModal extends PureComponent {
   handleReSendMail() {}
   render() {
     const {modalVisible, toggleModal} = this.props;
-    console.log('modal', this.props);
     return (
       <Modal visible={modalVisible} animationType="slide" transparent={true}>
         <View style={styles.mainView}>

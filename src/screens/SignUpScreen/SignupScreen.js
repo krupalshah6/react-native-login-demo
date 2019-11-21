@@ -51,7 +51,6 @@ class SignupScreen extends PureComponent {
   }
 
   handleFirstName(fname) {
-    console.log('fname', fname);
   }
 
   toggleModal = () => {
