@@ -120,7 +120,7 @@ class SignupScreen extends PureComponent {
         <View style={styles.container}>
           <View style={styles.rowCenter}>
             <View style={styles.imageView}>
-              <Image source={icon.LOGOMAIN} />
+              <Image source={icon.BLACKLOGO} />
             </View>
             <TouchableOpacity
               style={styles.toggleButton}

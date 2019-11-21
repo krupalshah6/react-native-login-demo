@@ -8,8 +8,6 @@ import {
   ScrollView,
 } from 'react-native';
 import {styles} from './styles';
-//images
-import micLogo from '../../assets/images/logoMain.png';
 import toggleMenu from '../../assets/images/openMic/icon/menu-white.png';
 
 //sidemenu
@@ -167,7 +165,7 @@ class HomeScreen extends PureComponent {
         <View style={styles.container}>
           <View style={styles.rowCenter}>
             <View style={styles.imageView}>
-              <Image source={micLogo} />
+              <Image source={icon.BLACKLOGO} />
             </View>
             <TouchableOpacity
               style={styles.toggleButton}
