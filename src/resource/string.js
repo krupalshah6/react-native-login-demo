@@ -34,6 +34,17 @@ const strings = {
   WEEK_DAYS: 'VIEW OTHER WEEK DAYS',
   HIDE_WEEK_DAYS: 'HIDE OTHER WEEK DAYS',
   DASHBOARD: 'DASHBOARD',
+  DASHBOARD_LABEL: 'Let’s make laugh everyone',
+  DASHBOARD_TAB_ONE: 'Draft',
+  DASHBOARD_TAB_TWO: 'My mics',
+  DASHBOARD_TAB_THREE: 'Account settings',
+  DASHBOARD_TAB_FOUR: 'Interested to participate',
+  OLD_PASSWORD: 'Old Password *',
+  NEW_PASSWORD: 'New Password *',
+  CONFIRM_PASSWORD: 'Confirm Password *',
+  CHANGE_PASSWORD: 'Change Password',
+  SAVE: 'Save',
+  UPDATE_ACCOUNT_DETAILS: 'Update Account Details',
 };
 
 export default strings;
