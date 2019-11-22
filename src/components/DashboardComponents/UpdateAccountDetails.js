@@ -8,15 +8,48 @@ import {
 } from 'accordion-collapse-react-native';
 import {styles} from './changePasswordStyles';
 import {icon} from '../../resource/icons';
+import AsyncStorage from '@react-native-community/async-storage';
+import {connect} from 'react-redux';
 class UpdateAccountDetails extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       collapsed: false,
+      avatar: [],
+      userData: {},
     };
   }
+
+  componentDidMount() {
+    const {avatar} = this.props;
+    let avatarUpdated = [...this.state.avatar];
+    AsyncStorage.getItem('user').then(data => {
+      if (data) {
+        this.setState({userData: JSON.parse(data)}, () => {
+          avatar.length > 0 &&
+            avatar.map((item, index) => {
+              if (item.id === this.state.userData.profile_avtar) {
+                avatarUpdated.push({
+                  profile_avtar: item.profile_avtar,
+                  id: item.id,
+                  isSelected: true,
+                });
+              } else {
+                avatarUpdated.push({
+                  profile_avtar: item.profile_avtar,
+                  id: item.id,
+                  isSelected: false,
+                });
+              }
+              return;
+            });
+          this.setState({avatar: avatarUpdated});
+        });
+      }
+    });
+  }
+
   render() {
-    console.log('avatar', this.props.avatar);
     return (
       <View
         style={[
@@ -46,17 +79,31 @@ class UpdateAccountDetails extends PureComponent {
                 <View>
                   <Text style={styles.selectAvatarText}>Select Avatar</Text>
                 </View>
-                <View style={styles.avatarMainView}>
-                  {this.props.avatar.length > 0 &&
-                    this.props.avatar.map((data, index) => {
-                      return (
-                        <Image
-                          style={styles.avatarImageStyle}
-                          source={{uri: data.profile_avtar}}
-                          resizeMode="contain"
-                        />
-                      );
-                    })}
+                <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                  <View style={styles.avatarMainView}>
+                    {this.state.avatar.length > 0 &&
+                      this.state.avatar.map((data, index) => {
+                        return (
+                          <TouchableOpacity key={index}>
+                            <View style={styles.selectedAvatarMainView}>
+                              <Image
+                                style={styles.avatarImageStyle}
+                                source={{uri: data.profile_avtar}}
+                                resizeMode="contain"
+                              />
+                              {data.isSelected && (
+                                <View style={styles.selectedAvatarView}>
+                                  <Image
+                                    style={styles.selectedAvatarImage}
+                                    source={icon.BORDER_AVATAR_IMAGE}
+                                  />
+                                </View>
+                              )}
+                            </View>
+                          </TouchableOpacity>
+                        );
+                      })}
+                  </View>
                 </View>
               </View>
               <View style={styles.oldPasswordView}>
@@ -85,4 +132,11 @@ class UpdateAccountDetails extends PureComponent {
     );
   }
 }
-export default UpdateAccountDetails;
+
+const mapStateToProps = state => ({
+  avatar: state.basicReducers.avatar,
+});
+export default connect(
+  mapStateToProps,
+  null,
+)(UpdateAccountDetails);

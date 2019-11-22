@@ -17,4 +17,5 @@ export const icon = {
   ICON_MIC: require('../assets/images/mic.png'),
   MICTWO: require('../assets/images/mic2.jpg'),
   PROFILE_DEFAULT: require('../assets/images/openMic/User.png'),
+  BORDER_AVATAR_IMAGE: require('../assets/images/openMic/selected.png'),
 };

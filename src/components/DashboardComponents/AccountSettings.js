@@ -7,7 +7,7 @@ class AccountSettings extends PureComponent {
     return (
       <View style={styles.container}>
         <ChangePassword />
-        <UpdateAccountDetails avatar={this.props.avatar} />
+        <UpdateAccountDetails />
       </View>
     );
   }
