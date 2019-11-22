@@ -24,17 +24,18 @@ class ButtonLogin extends PureComponent {
     super(props);
   }
   render() {
-    const {label, onPress, disabled} = this.props;
+    const {label, onPress, disabled, buttonColor, textColor} = this.props;
     const containerStyles = [
       styles.container,
       disabled ? styles.containerDisabled : styles.containerEnabled,
+      {backgroundColor: buttonColor},
     ];
     return (
       <TouchableOpacity
         style={containerStyles}
         onPress={onPress}
         disabled={disabled}>
-        <Text style={styles.textStyle}>{label}</Text>
+        <Text style={[styles.textStyle, {color: textColor}]}>{label}</Text>
       </TouchableOpacity>
     );
   }
@@ -45,7 +46,6 @@ let styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.DODGER_BLUE,
     borderRadius: 4,
     paddingVertical: 12,
     marginBottom: 12,

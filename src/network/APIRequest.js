@@ -5,7 +5,6 @@ export const postRequest = async (apiUrl, body, isHeader) => {
     authHeader = await AsyncStorage.getItem('Auth'); /// Add header
   }
   try {
-    console.log('postRequest', apiUrl, body);
     const response = await fetch(apiUrl, {
       credentials: 'include',
       method: 'POST',
@@ -18,8 +17,6 @@ export const postRequest = async (apiUrl, body, isHeader) => {
       body: JSON.stringify(body),
     });
     const responseJson = await response.json();
-    console.log('responseJson', responseJson);
-
     return responseJson;
   } catch (error) {
     console.error(error);
@@ -43,10 +40,7 @@ export const getRequest = async (apiUrl, isHeader) => {
         'authorization': authHeader,
       },
     });
-    console.log('getRequest', apiUrl);
     const responseJson = await response.json();
-    console.log('responseJson', responseJson);
-
     return responseJson;
   } catch (error) {
     console.error(error);
@@ -77,8 +71,6 @@ export const postImageRequest = async (
       body: createFormData(field, imageUrl, body),
     });
     const responseJson = await response.json();
-    console.log('responseJson', responseJson);
-
     return responseJson;
   } catch (error) {
     console.error(error);

@@ -33,6 +33,7 @@ class FormTypeText extends PureComponent {
           ref={this.TextInputRef}
           selectionColor={colors.DODGER_BLUE}
           style={styles.TextInput}
+          placeholderTextColor={colors.DARKGRAY}
           {...otherProps}
         />
         <Text style={styles.errorText}>{error || ''}</Text>
@@ -47,8 +48,12 @@ let styles = StyleSheet.create({
   },
   TextInput: {
     height: 40,
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderRadius: 3,
+    borderWidth: 0.52,
+    borderStyle: 'dashed',
     borderColor: colors.SILVER,
+    color: colors.DARKGRAY,
+    padding: 5,
   },
   errorText: {
     color: colors.TORCH_RED,
