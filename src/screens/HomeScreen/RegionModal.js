@@ -41,6 +41,7 @@ class RegionModal extends PureComponent {
                   {id: 5, title: 'Bridgeport Gloucester', icon: icon.PLACEONE},
                   {id: 6, title: 'Manhattan', icon: icon.PLACETWO},
                 ]}
+                keyExtractor={(item, index) => index.toString()}
                 renderItem={({item}) => (
                   <TouchableOpacity>
                     <View style={styles.regionImageMainView}>
@@ -70,7 +71,5 @@ class RegionModal extends PureComponent {
     );
   }
 }
-
-
 
 export default RegionModal;

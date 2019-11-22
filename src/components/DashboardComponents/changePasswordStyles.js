@@ -81,18 +81,17 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.BG_GRAY,
     borderRadius: 4,
-   // justifyContent: 'space-around',
   },
   avatarImageStyle: {
     width: 60,
     height: 60,
     flex: 1,
-    justifyContent: 'flex-start',
   },
   selectedAvatarMainView: {
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 10,
+    borderRadius: 100,
+    margin: 9,
   },
   selectedAvatarView: {
     position: 'absolute',

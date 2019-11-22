@@ -18,4 +18,6 @@ export const icon = {
   MICTWO: require('../assets/images/mic2.jpg'),
   PROFILE_DEFAULT: require('../assets/images/openMic/User.png'),
   BORDER_AVATAR_IMAGE: require('../assets/images/openMic/selected.png'),
+  USER: require('../assets/images/user.png'),
+  MAIL: require('../assets/images/mail.png'),
 };

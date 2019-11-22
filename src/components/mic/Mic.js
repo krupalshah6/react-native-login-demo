@@ -1,5 +1,12 @@
 import React, {PureComponent} from 'react';
-import {View, ScrollView, Image, StyleSheet, Text} from 'react-native';
+import {
+  View,
+  ScrollView,
+  Image,
+  StyleSheet,
+  Text,
+  FlatList,
+} from 'react-native';
 import {icon} from '../../resource/icons';
 import {
   heightPercentageToDP,
@@ -37,42 +44,44 @@ class Mic extends PureComponent {
   render() {
     return (
       <View>
-        {micData.map((data, index) => {
-          return (
-            <View key={index} style={styles.micFirstView}>
+        <FlatList
+          data={micData}
+          keyExtractor={(data, index) => index.toString()}
+          renderItem={({item}) => (
+            <View style={styles.micFirstView}>
               <View style={styles.micSecondView}>
                 <View style={styles.micImageView}>
                   <Image
                     style={styles.micImage}
-                    source={data.icon}
+                    source={item.icon}
                     resizeMode="contain"
                   />
                 </View>
               </View>
-              <Text style={styles.micNameText}>{data.name}</Text>
+              <Text style={styles.micNameText}>{item.name}</Text>
               <View style={styles.timeView}>
                 <Image style={styles.clockIcon} source={icon.ICON_CLOCK} />
-                <Text>{data.time}, </Text>
-                <Text>{data.day}</Text>
+                <Text>{item.time}, </Text>
+                <Text>{item.day}</Text>
               </View>
               <View style={styles.timeView}>
                 <Image style={styles.clockIcon} source={icon.ICON_LOCATION} />
-                <Text>{data.venue}, </Text>
-                <Text>{data.region}</Text>
+                <Text>{item.venue}, </Text>
+                <Text>{item.region}</Text>
               </View>
               <View style={styles.addressView}>
-                <Text style={styles.addressText}>{data.address},</Text>
+                <Text style={styles.addressText}>{item.address},</Text>
               </View>
               <View style={styles.timeView}>
                 <Image style={styles.clockIcon} source={icon.ICON_MIC} />
                 <Text>About The Mic</Text>
               </View>
               <View style={styles.addressView}>
-                <Text style={styles.aboutMicText}>{data.about}</Text>
+                <Text style={styles.aboutMicText}>{item.about}</Text>
               </View>
             </View>
-          );
-        })}
+          )}
+        />
       </View>
     );
   }
@@ -82,6 +91,11 @@ let styles = StyleSheet.create({
   micFirstView: {
     margin: 20,
     backgroundColor: colors.WHITE,
+    shadowColor: colors.BLACK,
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+    elevation: 1,
   },
   micSecondView: {
     justifyContent: 'center',

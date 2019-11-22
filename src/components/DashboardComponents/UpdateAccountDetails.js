@@ -79,33 +79,32 @@ class UpdateAccountDetails extends PureComponent {
                 <View>
                   <Text style={styles.selectAvatarText}>Select Avatar</Text>
                 </View>
-                <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                  <View style={styles.avatarMainView}>
-                    {this.state.avatar.length > 0 &&
-                      this.state.avatar.map((data, index) => {
-                        return (
-                          <TouchableOpacity key={index}>
-                            <View style={styles.selectedAvatarMainView}>
-                              <Image
-                                style={styles.avatarImageStyle}
-                                source={{uri: data.profile_avtar}}
-                                resizeMode="contain"
-                              />
-                              {data.isSelected && (
-                                <View style={styles.selectedAvatarView}>
-                                  <Image
-                                    style={styles.selectedAvatarImage}
-                                    source={icon.BORDER_AVATAR_IMAGE}
-                                  />
-                                </View>
-                              )}
-                            </View>
-                          </TouchableOpacity>
-                        );
-                      })}
-                  </View>
+                <View style={styles.avatarMainView}>
+                  {this.state.avatar.length > 0 &&
+                    this.state.avatar.map((data, index) => {
+                      return (
+                        <TouchableOpacity key={index}>
+                          <View style={styles.selectedAvatarMainView}>
+                            <Image
+                              style={styles.avatarImageStyle}
+                              source={{uri: data.profile_avtar}}
+                              resizeMode="contain"
+                            />
+                            {data.isSelected && (
+                              <View style={styles.selectedAvatarView}>
+                                <Image
+                                  style={styles.selectedAvatarImage}
+                                  source={icon.BORDER_AVATAR_IMAGE}
+                                />
+                              </View>
+                            )}
+                          </View>
+                        </TouchableOpacity>
+                      );
+                    })}
                 </View>
               </View>
+
               <View style={styles.oldPasswordView}>
                 <TextInput style={styles.oldPasswordInput} />
                 <Text style={styles.labelOldPassword}>{strings.FIRSTNAME}</Text>

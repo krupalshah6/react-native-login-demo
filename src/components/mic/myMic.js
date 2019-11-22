@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {View, ScrollView, Image, StyleSheet, Text} from 'react-native';
+import {View, ScrollView, Image, StyleSheet, Text, Alert} from 'react-native';
 import {icon} from '../../resource/icons';
 import {
   heightPercentageToDP,
@@ -85,13 +85,23 @@ class MyMic extends PureComponent {
                     </Text>
                   </TouchableOpacity>
                 </View>
-                <View style={styles.editButtonView}>
+                {/* <View style={styles.editButtonView}>
                   <TouchableOpacity>
                     <Text style={styles.editButtonText}>Edit mic</Text>
                   </TouchableOpacity>
-                </View>
+                </View> */}
                 <View style={styles.editButtonView}>
-                  <TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() =>
+                      Alert.alert(
+                        'Delete Mic',
+                        'Are you sure you want to delete mic?',
+                        [
+                          {text: 'Cancel', onPress: () => console.log()},
+                          {text: 'Delete', onPress: () => console.log()},
+                        ],
+                      )
+                    }>
                     <Text style={styles.deleteButtonText}>Delete</Text>
                   </TouchableOpacity>
                 </View>

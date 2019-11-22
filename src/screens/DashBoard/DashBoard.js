@@ -1,5 +1,12 @@
 import React, {PureComponent} from 'react';
-import {View, Image, TouchableOpacity, ScrollView, Text} from 'react-native';
+import {
+  View,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  Text,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import {connect} from 'react-redux';
 import NetInfo from '@react-native-community/netinfo';
 import {styles} from './styles';
@@ -10,6 +17,7 @@ import {icon} from '../../resource/icons';
 import AsyncStorage from '@react-native-community/async-storage';
 import MyMic from '../../components/mic/myMic';
 import AccountSettings from '../../components/DashboardComponents/AccountSettings';
+import IntrestedToParticipate from '../../components/DashboardComponents/IntrestedToParticipate';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 class DashBoard extends PureComponent {
   constructor(props) {
@@ -149,11 +157,14 @@ class DashBoard extends PureComponent {
         <View style={styles.container}>
           <View style={styles.rowCenter}>
             <View style={styles.imageView}>
-              <Image
-                style={styles.imageLogo}
-                source={icon.LOGOMAIN}
-                resizeMode="contain"
-              />
+              <TouchableWithoutFeedback
+                onPress={() => this.props.navigation.navigate('Home')}>
+                <Image
+                  style={styles.imageLogo}
+                  source={icon.LOGOMAIN}
+                  resizeMode="contain"
+                />
+              </TouchableWithoutFeedback>
             </View>
             <TouchableOpacity
               style={styles.toggleButton}
@@ -231,6 +242,12 @@ class DashBoard extends PureComponent {
                         return (
                           <View key={item.id} style={styles.micBoxView}>
                             <AccountSettings avatar={this.state.avatar} />
+                          </View>
+                        );
+                      } else if (item.id === 3 && item.isSelected === true) {
+                        return (
+                          <View key={item.id} style={styles.micBoxView}>
+                            <IntrestedToParticipate />
                           </View>
                         );
                       }
