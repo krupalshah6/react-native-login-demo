@@ -17,7 +17,11 @@ export const styles = StyleSheet.create({
   },
   imageView: {
     flexDirection: 'row',
-    padding: 10,
+  },
+  imageLogo: {
+    margin: 5,
+    width: widthPercentageToDP(70),
+    height: heightPercentageToDP(10),
   },
   toggleButton: {
     flexDirection: 'row',

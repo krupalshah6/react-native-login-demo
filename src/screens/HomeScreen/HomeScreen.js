@@ -101,7 +101,7 @@ class HomeScreen extends PureComponent {
   };
 
   handleDayNavigation = item => {
-     let days = [...this.state.days];
+    let days = [...this.state.days];
     days.map(data => {
       if (data.id === item.id) {
         data.selected = true;
@@ -165,7 +165,11 @@ class HomeScreen extends PureComponent {
         <View style={styles.container}>
           <View style={styles.rowCenter}>
             <View style={styles.imageView}>
-              <Image source={icon.BLACKLOGO} />
+              <Image
+                style={styles.imageLogo}
+                source={icon.LOGOMAIN}
+                resizeMode="contain"
+              />
             </View>
             <TouchableOpacity
               style={styles.toggleButton}

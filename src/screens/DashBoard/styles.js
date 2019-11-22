@@ -1,8 +1,8 @@
 import {StyleSheet} from 'react-native';
 import colors from '../../resource/colors';
 import {RFPercentage} from 'react-native-responsive-fontsize';
-import {widthPercentageToDP} from 'react-native-responsive-screen';
-
+import {widthPercentageToDP, heightPercentageToDP} from 'react-native-responsive-screen';
+import metrics from '../../resource/metrics';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -14,7 +14,11 @@ export const styles = StyleSheet.create({
   },
   imageView: {
     flexDirection: 'row',
-    padding: 10,
+  },
+  imageLogo: {
+    margin: 5,
+    width: widthPercentageToDP(70),
+    height: heightPercentageToDP(10),
   },
   toggleButton: {
     flexDirection: 'row',

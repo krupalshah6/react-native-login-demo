@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {View, Text, TextInput, TouchableOpacity} from 'react-native';
+import {View, Text, TextInput, TouchableOpacity, Image} from 'react-native';
 import strings from '../../resource/string';
 import {
   Collapse,
@@ -7,6 +7,7 @@ import {
   CollapseBody,
 } from 'accordion-collapse-react-native';
 import {styles} from './changePasswordStyles';
+import {icon} from '../../resource/icons';
 class UpdateAccountDetails extends PureComponent {
   constructor(props) {
     super(props);
@@ -15,6 +16,7 @@ class UpdateAccountDetails extends PureComponent {
     };
   }
   render() {
+    console.log('avatar', this.props.avatar);
     return (
       <View
         style={[
@@ -40,6 +42,23 @@ class UpdateAccountDetails extends PureComponent {
           </CollapseHeader>
           <CollapseBody>
             <View style={styles.changePasswordCollapsedView}>
+              <View style={styles.selectAvatarView}>
+                <View>
+                  <Text style={styles.selectAvatarText}>Select Avatar</Text>
+                </View>
+                <View style={styles.avatarMainView}>
+                  {this.props.avatar.length > 0 &&
+                    this.props.avatar.map((data, index) => {
+                      return (
+                        <Image
+                          style={styles.avatarImageStyle}
+                          source={{uri: data.profile_avtar}}
+                          resizeMode="contain"
+                        />
+                      );
+                    })}
+                </View>
+              </View>
               <View style={styles.oldPasswordView}>
                 <TextInput style={styles.oldPasswordInput} />
                 <Text style={styles.labelOldPassword}>{strings.FIRSTNAME}</Text>

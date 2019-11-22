@@ -123,7 +123,11 @@ class LoginScreen extends PureComponent {
         <View style={styles.container}>
           <View style={styles.rowCenter}>
             <View style={styles.imageView}>
-              <Image source={icon.BLACKLOGO} />
+              <Image
+                style={styles.imageLogo}
+                source={icon.LOGOMAIN}
+                resizeMode="contain"
+              />
             </View>
             <TouchableOpacity
               style={styles.toggleButton}

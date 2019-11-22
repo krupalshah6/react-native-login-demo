@@ -41,7 +41,7 @@ export const styles = StyleSheet.create({
     margin: 20,
   },
   oldPasswordView: {
-    borderWidth: StyleSheet.hairlineWidth,
+    borderWidth: 1,
     borderColor: colors.BG_GRAY,
     borderRadius: 4,
     marginBottom: 20,
@@ -68,5 +68,25 @@ export const styles = StyleSheet.create({
     margin: 10,
     color: colors.DODGER_BLUE,
     fontSize: RFPercentage(3),
+  },
+  selectAvatarView: {
+    marginBottom: 20,
+  },
+  selectAvatarText: {
+    fontSize: RFPercentage(3),
+  },
+  avatarMainView: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    borderWidth: 1,
+    borderColor: colors.BG_GRAY,
+    borderRadius: 4,
+    flex: 1,
+    justifyContent: 'space-between',
+  },
+  avatarImageStyle: {
+    margin: 20,
+    width: 60,
+    height: 60,
   },
 });

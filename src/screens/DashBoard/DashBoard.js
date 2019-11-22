@@ -10,7 +10,7 @@ import {icon} from '../../resource/icons';
 import AsyncStorage from '@react-native-community/async-storage';
 import MyMic from '../../components/mic/myMic';
 import AccountSettings from '../../components/DashboardComponents/AccountSettings';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';;
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 class DashBoard extends PureComponent {
   constructor(props) {
     super(props);
@@ -149,7 +149,11 @@ class DashBoard extends PureComponent {
         <View style={styles.container}>
           <View style={styles.rowCenter}>
             <View style={styles.imageView}>
-              <Image source={icon.BLACKLOGO} />
+              <Image
+                style={styles.imageLogo}
+                source={icon.LOGOMAIN}
+                resizeMode="contain"
+              />
             </View>
             <TouchableOpacity
               style={styles.toggleButton}
@@ -226,7 +230,7 @@ class DashBoard extends PureComponent {
                       } else if (item.id === 2 && item.isSelected === true) {
                         return (
                           <View key={item.id} style={styles.micBoxView}>
-                            <AccountSettings />
+                            <AccountSettings avatar={this.state.avatar} />
                           </View>
                         );
                       }
