@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Keyboard,
-  Switch,
+  Alert,
 } from 'react-native';
 //sidemenu
 import SideMenu from 'react-native-side-menu';
@@ -31,6 +31,7 @@ import * as Yup from 'yup';
 import {showMessage} from '../../resource/validationRules';
 // actions
 import {userLogin} from '../../redux/actions/authActions';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 class LoginScreen extends PureComponent {
   constructor(props) {
@@ -60,8 +61,7 @@ class LoginScreen extends PureComponent {
   }
 
   _handleConnectivityChange = state => {
-    this.setState({isConnected: state.isConnected}, () => {
-    });
+    this.setState({isConnected: state.isConnected}, () => {});
   };
 
   toggleMenu() {
@@ -80,8 +80,7 @@ class LoginScreen extends PureComponent {
     });
   }
 
-  handleFirstName(fname) {
-  }
+  handleFirstName(fname) {}
 
   toggleSwitch() {
     this.setState({showPassword: !this.state.showPassword});
@@ -135,89 +134,103 @@ class LoginScreen extends PureComponent {
               <Image source={icon.TOGGLE} />
             </TouchableOpacity>
           </View>
-          <ScrollView>
-            <View style={styles.SignUpView}>
-              <Text style={styles.SignUpText}>{strings.LOGIN_SMALL}</Text>
-              <View style={styles.dotted} />
-              <Text style={styles.signInfo}>{strings.SIGNUPTEXT}</Text>
+          <KeyboardAwareScrollView enableOnAndroid={true}>
+            <ScrollView>
+              <View style={styles.SignUpView}>
+                <Text style={styles.SignUpText}>{strings.LOGIN_SMALL}</Text>
+                <View style={styles.dotted} />
+                <Text style={styles.signInfo}>{strings.SIGNUPTEXT}</Text>
 
-              <Formik
-                initialValues={{
-                  email: '',
-                  password: '',
-                }}
-                validationSchema={validationSchema}
-                onSubmit={values => {
-                  const {email, password} = values;
-                  const userLoginData = {
-                    email: email,
-                    password: password,
-                  };
-                  if (!this.state.isConnected) {
-                    showMessage(strings.NO_INTERNET_CONNECTION);
-                    return;
-                  }
-                  Keyboard.dismiss();
-                  this.props.userLogin(userLoginData).then(value => {
-                    if (this.props.response === undefined) {
+                <Formik
+                  initialValues={{
+                    email: '',
+                    password: '',
+                  }}
+                  validationSchema={validationSchema}
+                  onSubmit={values => {
+                    const {email, password} = values;
+                    const userLoginData = {
+                      email: email,
+                      password: password,
+                    };
+                    if (!this.state.isConnected) {
+                      showMessage(strings.NO_INTERNET_CONNECTION);
                       return;
                     }
-                    const {status, message, data} = this.props.response;
-                    if (status === false) {
-                      showMessage(message);
-                    } else if (status === true) {
-                      AsyncStorage.setItem('user', JSON.stringify(data));
-                      this.props.navigation.replace('DashBoard');
-                    }
-                  });
-                }}>
-                {({handleChange, handleBlur, handleSubmit, values, errors}) => (
-                  <View style={styles.form}>
-                    <FormTypeText
-                      value={values.email}
-                      onChangeText={handleChange('email')}
-                      onBlur={handleBlur('email')}
-                      placeholder={strings.EMAILTEXT}
-                      error={errors.email}
-                      keyboardType="email-address"
-                      returnKeyType="next"
-                      autoCapitalize="none"
-                    />
-                    <View style={styles.passwordView}>
-                      <View style={styles.passwordsecondView}>
-                        <FormTypeText
-                          value={values.password}
-                          onChangeText={handleChange('password')}
-                          onBlur={handleBlur('password')}
-                          placeholder={strings.PASSWORDTEXT}
-                          error={errors.password}
-                          returnKeyType="next"
-                          secureTextEntry={this.state.showPassword}
-                        />
+                    Keyboard.dismiss();
+                    this.props
+                      .userLogin(userLoginData)
+                      .then(value => {
+                        Alert.alert('called');
+                        if (this.props.response === undefined) {
+                          return;
+                        }
+                        const {status, message, data} = this.props.response;
+                        if (status === false) {
+                          showMessage(message);
+                        } else if (status === true) {
+                          AsyncStorage.setItem('user', JSON.stringify(data));
+                          this.props.navigation.replace('DashBoard');
+                        }
+                      })
+                      .catch(error => {
+                        Alert.alert('catch called', error);
+                      });
+                  }}>
+                  {({
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    values,
+                    errors,
+                  }) => (
+                    <View style={styles.form}>
+                      <FormTypeText
+                        value={values.email}
+                        onChangeText={handleChange('email')}
+                        onBlur={handleBlur('email')}
+                        placeholder={strings.EMAILTEXT}
+                        error={errors.email}
+                        keyboardType="email-address"
+                        returnKeyType="next"
+                        autoCapitalize="none"
+                      />
+                      <View style={styles.passwordView}>
+                        <View style={styles.passwordsecondView}>
+                          <FormTypeText
+                            value={values.password}
+                            onChangeText={handleChange('password')}
+                            onBlur={handleBlur('password')}
+                            placeholder={strings.PASSWORDTEXT}
+                            error={errors.password}
+                            returnKeyType="next"
+                            secureTextEntry={this.state.showPassword}
+                          />
+                        </View>
+                        <TouchableOpacity
+                          style={styles.switchView}
+                          onPress={this.toggleSwitch}>
+                          <Image
+                            style={styles.eyeImage}
+                            source={
+                              this.state.showPassword
+                                ? icon.EyeShow
+                                : icon.EyeClose
+                            }
+                          />
+                        </TouchableOpacity>
                       </View>
                       <TouchableOpacity
-                        style={styles.switchView}
-                        onPress={this.toggleSwitch}>
-                        <Image
-                          style={styles.eyeImage}
-                          source={
-                            this.state.showPassword
-                              ? icon.EyeShow
-                              : icon.EyeClose
-                          }
-                        />
+                        style={styles.buttonStyle}
+                        onPress={handleSubmit}>
+                        <Text style={styles.textSignUp}>{strings.LOGIN}</Text>
                       </TouchableOpacity>
                     </View>
-                    <TouchableOpacity
-                      style={styles.buttonStyle}
-                      onPress={handleSubmit}>
-                      <Text style={styles.textSignUp}>{strings.LOGIN}</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-              </Formik>
-            </View>
-          </ScrollView>
+                  )}
+                </Formik>
+              </View>
+            </ScrollView>
+          </KeyboardAwareScrollView>
         </View>
       </SideMenu>
     );
@@ -232,11 +245,12 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = dispatch => {
   return {
-    ...bindActionCreators({userLogin}, dispatch),
+    // explicitly forwarding arguments
+    userLogin: userLoginData => dispatch(userLogin(userLoginData)),
   };
-}
+};
 
 export default connect(
   mapStateToProps,

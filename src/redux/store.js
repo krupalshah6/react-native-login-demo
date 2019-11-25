@@ -7,7 +7,7 @@ let store;
 if (process.env.NODE_ENV === 'development') {
   store = createStore(rootReducer, applyMiddleware(thunk, logger));
 } else {
-  store = createStore(rootReducer);
+  store = createStore(rootReducer, applyMiddleware(thunk));
 }
 
 const dispatch = action => {

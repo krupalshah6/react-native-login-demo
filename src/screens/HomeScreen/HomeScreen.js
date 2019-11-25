@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import {connect} from 'react-redux';
 import {
   View,
   Image,
@@ -21,6 +22,12 @@ import FilterModal from './FilterModal';
 import colors from '../../resource/colors';
 import Mic from '../../components/mic/Mic';
 import AsyncStorage from '@react-native-community/async-storage';
+import {getRequest} from '../../network/APIRequest';
+import ApiUrls from '../../network/APIUrl';
+import {showMessage} from '../../resource/validationRules';
+import NetInfo from '@react-native-community/netinfo';
+import {getRegion, setCurrentRegion} from '../../redux/actions/basicActions';
+import {dispatch} from '../../redux/store';
 class HomeScreen extends PureComponent {
   constructor(props) {
     super(props);
@@ -39,6 +46,8 @@ class HomeScreen extends PureComponent {
         {id: 5, day: 'Thursday', selected: false},
         {id: 6, day: 'Friday', selected: false},
       ],
+      region: [],
+      defaultRegion: {},
     };
     this.toggleMenu = this.toggleMenu.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
@@ -49,6 +58,74 @@ class HomeScreen extends PureComponent {
 
   componentDidMount() {
     this.checkAuth();
+    NetInfo.isConnected.addEventListener(
+      'connectionChange',
+      this._handleConnectivityChange,
+    );
+
+    NetInfo.isConnected.fetch().done(isConnected => {
+      if (isConnected === true) {
+        this.getRegionData();
+        this.getMicFeesType();
+        this.setState({isConnected: true});
+      } else {
+        this.setState({isConnected: false});
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener(
+      'connectionChange',
+      this._handleConnectivityChange,
+    );
+  }
+
+  componentDidUpdate(preProps) {
+    if (preProps.defaultRegion !== this.props.defaultRegion) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({defaultRegion: this.props.defaultRegion});
+    }
+  }
+
+  _handleConnectivityChange = isConnected => {
+    if (isConnected === true) {
+      this.setState({isConnected: true});
+    } else {
+      this.setState({isConnected: false});
+    }
+  };
+
+  async getRegionData() {
+    console.log('called');
+    if (!this.state.isConnected) {
+      showMessage(strings.NO_INTERNET_CONNECTION);
+      return;
+    }
+    const result = await getRequest(ApiUrls.GET_REGION);
+    if (result.code === 200 && result.status === true) {
+      const currentRegion = {
+        id: result.data[0].id,
+        name: result.data[0].region,
+        image: result.data[0].region_image,
+      };
+      dispatch(getRegion(result.data));
+      dispatch(setCurrentRegion(currentRegion));
+      this.setState({region: result.data, defaultRegion: currentRegion});
+    } else if (result.code === 200 && result.status === false) {
+      showMessage(result.message);
+    }
+  }
+
+  async getMicFeesType() {
+    if (!this.state.isConnected) {
+      showMessage(strings.NO_INTERNET_CONNECTION);
+      return;
+    }
+    const result = await getRequest(ApiUrls.GET_FEES);
+    if (result.code === 200 && result.status === true) {
+      console.log('fees type', result);
+    }
   }
 
   checkAuth() {
@@ -188,7 +265,7 @@ class HomeScreen extends PureComponent {
               <View style={styles.boxMain}>
                 <View style={styles.boxView}>
                   <Text style={styles.regionValueText}>
-                    Bridgeport Gloucester
+                    {this.state.defaultRegion.name}
                   </Text>
                 </View>
                 <Text style={styles.regionText}>{strings.BTN_REGION}</Text>
@@ -278,6 +355,7 @@ class HomeScreen extends PureComponent {
         <RegionModal
           modalVisible={this.state.modalVisible}
           toggleModal={this.toggleModal}
+          region={this.state.region}
         />
         <FilterModal
           modalVisible={this.state.filterModalVisible}
@@ -289,4 +367,10 @@ class HomeScreen extends PureComponent {
   }
 }
 
-export default HomeScreen;
+const mapStateToProps = state => ({
+  defaultRegion: state.basicReducers.defaultRegion,
+});
+export default connect(
+  mapStateToProps,
+  null,
+)(HomeScreen);

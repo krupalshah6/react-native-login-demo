@@ -1,3 +1,4 @@
+/* eslint-disable react/no-did-mount-set-state */
 import React, {PureComponent} from 'react';
 import {
   View,
@@ -12,10 +13,45 @@ import Modal from 'react-native-modal';
 import {styles} from './RegionModalStyle';
 import {icon} from '../../resource/icons';
 import strings from '../../resource/string';
+import { dispatch } from '../../redux/store';
+import { setCurrentRegion } from '../../redux/actions/basicActions';
 class RegionModal extends PureComponent {
-  handleReSendMail() {}
+  constructor(props) {
+    super(props);
+    this.state = {
+      regionList: [],
+    };
+  }
+
+  componentDidMount() {
+    const {region} = this.props;
+    if (region.length > 0) {
+      this.setState({regionList: region});
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.region !== this.state.region) {
+      if (this.props.region.length > 0) {
+        // eslint-disable-next-line react/no-did-update-set-state
+        this.setState({regionList: this.props.region});
+      }
+    }
+  }
+
+  handleSelectRegion = item => {
+    const currentRegion = {
+      id: item.id,
+      name: item.region,
+      image: item.region_image,
+    };
+    dispatch(setCurrentRegion(currentRegion));
+    this.props.toggleModal();
+  };
+
   render() {
     const {modalVisible, toggleModal} = this.props;
+    console.log('region list', this.state.regionList);
     return (
       <Modal visible={modalVisible} animationType="slide" transparent={true}>
         <View style={styles.mainView}>
@@ -33,26 +69,20 @@ class RegionModal extends PureComponent {
               </View>
               <View style={styles.dotted} />
               <FlatList
-                data={[
-                  {id: 1, title: 'Bridgeport Gloucester', icon: icon.PLACEONE},
-                  {id: 2, title: 'Manhattan', icon: icon.PLACETWO},
-                  {id: 3, title: 'Bridgeport Gloucester', icon: icon.PLACEONE},
-                  {id: 4, title: 'Manhattan', icon: icon.PLACETWO},
-                  {id: 5, title: 'Bridgeport Gloucester', icon: icon.PLACEONE},
-                  {id: 6, title: 'Manhattan', icon: icon.PLACETWO},
-                ]}
+                data={this.state.regionList}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({item}) => (
-                  <TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => this.handleSelectRegion(item)}>
                     <View style={styles.regionImageMainView}>
                       <View>
                         <Image
                           style={styles.regionImageStyle}
-                          source={item.icon}
+                          source={{uri: item.region_image}}
                         />
                         <View style={styles.overlay} />
                       </View>
-                      <Text style={styles.regionButtonText}>{item.title}</Text>
+                      <Text style={styles.regionButtonText}>{item.region}</Text>
                     </View>
                   </TouchableOpacity>
                 )}

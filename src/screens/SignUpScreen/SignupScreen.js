@@ -22,6 +22,7 @@ import {icon} from '../../resource/icons';
 import FormTypeText from '../../components/inputElements/FormTypeText';
 // Modal
 import ReSendMailModal from './ReSendMailModal';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 class SignupScreen extends PureComponent {
   constructor(props) {
@@ -50,8 +51,7 @@ class SignupScreen extends PureComponent {
     this.setState({isOpen});
   }
 
-  handleFirstName(fname) {
-  }
+  handleFirstName(fname) {}
 
   toggleModal = () => {
     this.setState({modalVisible: !this.state.modalVisible});
@@ -132,122 +132,130 @@ class SignupScreen extends PureComponent {
               <Image source={icon.TOGGLE} />
             </TouchableOpacity>
           </View>
-          <ScrollView>
-            <View style={styles.SignUpView}>
-              <Text style={styles.SignUpText}>{strings.SIGNUP_SMALL}</Text>
-              <View style={styles.dotted} />
-              <Text style={styles.signInfo}>{strings.SIGNUPTEXT}</Text>
+          <KeyboardAwareScrollView enableOnAndroid={true}>
+            <ScrollView>
+              <View style={styles.SignUpView}>
+                <Text style={styles.SignUpText}>{strings.SIGNUP_SMALL}</Text>
+                <View style={styles.dotted} />
+                <Text style={styles.signInfo}>{strings.SIGNUPTEXT}</Text>
 
-              <Formik
-                initialValues={{
-                  fName: '',
-                  lName: '',
-                  email: '',
-                  password: '',
-                  passwordConfirmation: '',
-                  contactNo: '',
-                }}
-                validationSchema={validationSchema}
-                onSubmit={values => {
-                  this.toggleModal();
-                }}>
-                {({handleChange, handleBlur, handleSubmit, values, errors}) => (
-                  <View style={styles.form}>
-                    <FormTypeText
-                      value={values.fName}
-                      onChangeText={handleChange('fName')}
-                      onBlur={handleBlur('fName')}
-                      placeholder={strings.FIRSTNAME}
-                      error={errors.fName}
-                      returnKeyType="next"
-                    />
-                    <FormTypeText
-                      value={values.lName}
-                      onChangeText={handleChange('lName')}
-                      onBlur={handleBlur('lName')}
-                      placeholder={strings.LASTNAME}
-                      error={errors.lName}
-                      returnKeyType="next"
-                    />
-                    <FormTypeText
-                      value={values.email}
-                      onChangeText={handleChange('email')}
-                      onBlur={handleBlur('email')}
-                      placeholder={strings.EMAILTEXT}
-                      error={errors.email}
-                      keyboardType="email-address"
-                      returnKeyType="next"
-                      autoCapitalize="none"
-                    />
-                    <View style={styles.passwordView}>
-                      <View style={styles.passwordsecondView}>
-                        <FormTypeText
-                          value={values.password}
-                          onChangeText={handleChange('password')}
-                          onBlur={handleBlur('password')}
-                          placeholder={strings.PASSWORDTEXT}
-                          error={errors.password}
-                          returnKeyType="next"
-                          secureTextEntry={this.state.showPassword}
-                        />
-                      </View>
-                      <TouchableOpacity
-                        style={styles.switchView}
-                        onPress={this.toggleSwitch}>
-                        <Image
-                          style={styles.eyeImage}
-                          source={
-                            this.state.showPassword
-                              ? icon.EyeShow
-                              : icon.EyeClose
-                          }
-                        />
-                      </TouchableOpacity>
-                    </View>
-                    <View style={styles.passwordView}>
-                      <View style={styles.passwordsecondView}>
-                        <FormTypeText
-                          value={values.passwordConfirmation}
-                          onChangeText={handleChange('passwordConfirmation')}
-                          onBlur={handleBlur('passwordConfirmation')}
-                          placeholder={strings.CONPASSWORDTEXT}
-                          error={errors.passwordConfirmation}
-                          returnKeyType="passwordConfirmation"
-                          secureTextEntry={this.state.showPasswordConfirm}
-                        />
+                <Formik
+                  initialValues={{
+                    fName: '',
+                    lName: '',
+                    email: '',
+                    password: '',
+                    passwordConfirmation: '',
+                    contactNo: '',
+                  }}
+                  validationSchema={validationSchema}
+                  onSubmit={values => {
+                    this.toggleModal();
+                  }}>
+                  {({
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    values,
+                    errors,
+                  }) => (
+                    <View style={styles.form}>
+                      <FormTypeText
+                        value={values.fName}
+                        onChangeText={handleChange('fName')}
+                        onBlur={handleBlur('fName')}
+                        placeholder={strings.FIRSTNAME}
+                        error={errors.fName}
+                        returnKeyType="next"
+                      />
+                      <FormTypeText
+                        value={values.lName}
+                        onChangeText={handleChange('lName')}
+                        onBlur={handleBlur('lName')}
+                        placeholder={strings.LASTNAME}
+                        error={errors.lName}
+                        returnKeyType="next"
+                      />
+                      <FormTypeText
+                        value={values.email}
+                        onChangeText={handleChange('email')}
+                        onBlur={handleBlur('email')}
+                        placeholder={strings.EMAILTEXT}
+                        error={errors.email}
+                        keyboardType="email-address"
+                        returnKeyType="next"
+                        autoCapitalize="none"
+                      />
+                      <View style={styles.passwordView}>
+                        <View style={styles.passwordsecondView}>
+                          <FormTypeText
+                            value={values.password}
+                            onChangeText={handleChange('password')}
+                            onBlur={handleBlur('password')}
+                            placeholder={strings.PASSWORDTEXT}
+                            error={errors.password}
+                            returnKeyType="next"
+                            secureTextEntry={this.state.showPassword}
+                          />
+                        </View>
                         <TouchableOpacity
                           style={styles.switchView}
-                          onPress={this.toggleSwitchConfirm}>
+                          onPress={this.toggleSwitch}>
                           <Image
                             style={styles.eyeImage}
                             source={
-                              this.state.showPasswordConfirm
+                              this.state.showPassword
                                 ? icon.EyeShow
                                 : icon.EyeClose
                             }
                           />
                         </TouchableOpacity>
                       </View>
-                    </View>
+                      <View style={styles.passwordView}>
+                        <View style={styles.passwordsecondView}>
+                          <FormTypeText
+                            value={values.passwordConfirmation}
+                            onChangeText={handleChange('passwordConfirmation')}
+                            onBlur={handleBlur('passwordConfirmation')}
+                            placeholder={strings.CONPASSWORDTEXT}
+                            error={errors.passwordConfirmation}
+                            returnKeyType="next"
+                            secureTextEntry={this.state.showPasswordConfirm}
+                          />
+                          <TouchableOpacity
+                            style={styles.switchView}
+                            onPress={this.toggleSwitchConfirm}>
+                            <Image
+                              style={styles.eyeImage}
+                              source={
+                                this.state.showPasswordConfirm
+                                  ? icon.EyeShow
+                                  : icon.EyeClose
+                              }
+                            />
+                          </TouchableOpacity>
+                        </View>
+                      </View>
 
-                    <FormTypeText
-                      value={values.contactNo}
-                      onChangeText={handleChange('contactNo')}
-                      onBlur={handleBlur('contactNo')}
-                      placeholder={strings.CONTACTNO}
-                      error={errors.contactNo}
-                      returnKeyType="done"
-                    />
-                    <TouchableOpacity
-                      style={styles.buttonStyle}
-                      onPress={handleSubmit}>
-                      <Text style={styles.textSignUp}>{strings.SIGNUP}</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-              </Formik>
-            </View>
-          </ScrollView>
+                      <FormTypeText
+                        value={values.contactNo}
+                        onChangeText={handleChange('contactNo')}
+                        onBlur={handleBlur('contactNo')}
+                        placeholder={strings.CONTACTNO}
+                        error={errors.contactNo}
+                        returnKeyType="done"
+                      />
+                      <TouchableOpacity
+                        style={styles.buttonStyle}
+                        onPress={handleSubmit}>
+                        <Text style={styles.textSignUp}>{strings.SIGNUP}</Text>
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </Formik>
+              </View>
+            </ScrollView>
+          </KeyboardAwareScrollView>
         </View>
         <ReSendMailModal
           modalVisible={this.state.modalVisible}

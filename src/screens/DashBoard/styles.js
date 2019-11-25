@@ -109,6 +109,6 @@ export const styles = StyleSheet.create({
   micBoxView: {
     shadowOffset: {width: 1, height: 1},
     shadowColor: 'black',
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.9,
   },
 });

@@ -20,6 +20,7 @@ const strings = {
   PASSWORDTEXT: 'Password *',
   CONPASSWORDTEXT: 'Confirm Password *',
   CONTACTNO: 'Contact Number *',
+  COMMENT: 'Comment',
   RESENDMAILTEXT:
     'Congratulation! Welcome in Open Mic List.We sent you a link to ',
   RESENDMAILTEXT2: 'Confirm your email address.',
@@ -48,6 +49,7 @@ const strings = {
   MIC_CONTACT: 'Contact',
   BTN_REQUEST_TO_PARTICIPATE: 'Request to participate',
   TEXT_PARTICIPATE: 'Send request to producer',
+  BTN_SEND_YOUR_REQUEST: 'Send Your Request',
 };
 
 export default strings;

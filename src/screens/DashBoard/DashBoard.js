@@ -40,19 +40,20 @@ class DashBoard extends PureComponent {
     this.handleLogout = this.handleLogout.bind(this);
   }
 
-  static getDerivedStateFromProps(props, state) {
-    if (props.avatar !== state.avatar) {
-      return {
-        avatar: props.avatar,
-      };
-    }
-    return null;
-  }
+  // static getDerivedStateFromProps(props, state) {
+  //   if (props.avatar !== state.avatar) {
+  //     return {
+  //       avatar: props.avatar,
+  //     };
+  //   }
+  //   return null;
+  // }
 
   componentDidMount() {
     this._subscription = NetInfo.addEventListener(
       this._handleConnectivityChange,
     );
+    this.checkAuth();
   }
 
   componentWillUnmount() {
@@ -61,8 +62,9 @@ class DashBoard extends PureComponent {
     );
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (prevProps.avatar !== this.props.avatar) {
+      this.checkAuth();
       this.getUserProfile();
     }
   }
@@ -76,7 +78,9 @@ class DashBoard extends PureComponent {
   checkAuth() {
     AsyncStorage.getItem('user').then(data => {
       if (data) {
-        this.setState({userData: JSON.parse(data)});
+        this.setState({userData: JSON.parse(data)}, () => {
+          this.getUserProfile();
+        });
         if (data.token !== '') {
           this.setState({isAuthenticate: true});
         } else {
@@ -88,17 +92,21 @@ class DashBoard extends PureComponent {
     });
   }
 
-  getUserProfile() {
-    const {userData, avatar} = this.state;
+  getUserProfile = () => {
+    const {userData} = this.state;
+    const {avatar} = this.props;
     if (userData) {
-      avatar &&
+      console.log('avatar', this.props.avatar);
+      avatar.length > 0 &&
         avatar.map(item => {
           if (userData.profile_avtar === item.id) {
-            this.setState({profile: item.profile_avtar_url});
+            this.setState({profile: item.profile_avtar_url}, () => {
+              console.log('profile', this.state.profile);
+            });
           }
         });
     }
-  }
+  };
 
   toggleMenu() {
     this.setState({

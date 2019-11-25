@@ -50,9 +50,7 @@ export const styles = StyleSheet.create({
     marginBottom: 10,
     marginStart: 5,
   },
-  boxMain: {
-//    alignItems: 'center',
-  },
+  boxMain: {},
   boxView: {
     borderRadius: 5,
     borderWidth: 1,
@@ -99,9 +97,8 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   buttonView: {
-    borderRadius: 5,
+    borderRadius: 0,
     padding: 5,
-    margin: 5,
     borderStyle: 'solid',
     overflow: 'hidden',
     borderBottomWidth: 2,
