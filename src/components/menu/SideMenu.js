@@ -8,6 +8,8 @@ export default function MainMenu({
   buttonLabel,
   onMethodPressTwo,
   buttonLabelTwo,
+  onHomePress,
+  buttonLabelHome,
 }) {
   return (
     <View style={style.container}>
@@ -15,12 +17,21 @@ export default function MainMenu({
         <Text style={style.closeText}>X</Text>
       </TouchableOpacity>
       <View style={style.buttonView}>
-        <TouchableOpacity style={style.logout} onPress={onMethodPress}>
-          <Text style={style.logoutText}>{buttonLabel}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={style.logout} onPress={onMethodPressTwo}>
-          <Text style={style.logoutText}>{buttonLabelTwo}</Text>
-        </TouchableOpacity>
+        {buttonLabelHome !== '' && (
+          <TouchableOpacity style={style.logout} onPress={onHomePress}>
+            <Text style={style.logoutText}>{buttonLabelHome}</Text>
+          </TouchableOpacity>
+        )}
+        {buttonLabel !== '' && (
+          <TouchableOpacity style={style.logout} onPress={onMethodPress}>
+            <Text style={style.logoutText}>{buttonLabel}</Text>
+          </TouchableOpacity>
+        )}
+        {buttonLabelTwo !== '' && (
+          <TouchableOpacity style={style.logout} onPress={onMethodPressTwo}>
+            <Text style={style.logoutText}>{buttonLabelTwo}</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

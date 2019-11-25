@@ -20,4 +20,7 @@ export const icon = {
   BORDER_AVATAR_IMAGE: require('../assets/images/openMic/selected.png'),
   USER: require('../assets/images/user.png'),
   MAIL: require('../assets/images/mail.png'),
+  ICON_CONTACT_BLACK: require('../assets/images/contacts_black.png'),
+  ICON_BEER: require('../assets/images/beer.png'),
+  ICON_PAYMENT: require('../assets/images/card.png'),
 };

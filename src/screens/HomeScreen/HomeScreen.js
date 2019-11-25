@@ -114,6 +114,7 @@ class HomeScreen extends PureComponent {
   };
 
   handleViewDays = () => {
+    this.scrollRef.scrollTo({x: 0, animated: true});
     this.setState({vieWDays: !this.state.vieWDays}, () => {
       if (this.state.vieWDays === false) {
         let days = [...this.state.days];
@@ -206,7 +207,8 @@ class HomeScreen extends PureComponent {
               <View style={styles.tabButtonMainView}>
                 <ScrollView
                   horizontal={true}
-                  showsHorizontalScrollIndicator={false}>
+                  showsHorizontalScrollIndicator={false}
+                  ref={ref => (this.scrollRef = ref)}>
                   {this.state.days.map((data, index) => {
                     if (this.state.vieWDays === false) {
                       if (data.id <= 1) {
@@ -269,7 +271,7 @@ class HomeScreen extends PureComponent {
                   </TouchableOpacity>
                 </View>
               </View>
-              <Mic />
+              <Mic navigation={this.props.navigation} />
             </View>
           </ScrollView>
         </View>

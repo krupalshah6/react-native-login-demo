@@ -86,12 +86,13 @@ export const styles = StyleSheet.create({
     width: 60,
     height: 60,
     flex: 1,
+    justifyContent: 'flex-start',
   },
   selectedAvatarMainView: {
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 100,
-    margin: 9,
+    margin: 10,
   },
   selectedAvatarView: {
     position: 'absolute',

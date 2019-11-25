@@ -16,5 +16,6 @@ const colors = {
   MIC_NAME: '#0374e2',
   BTN_PASSWORD_PLACE: '#979797',
   GRAY_DARK_TEXT: '#9a9a9a',
+  BTN_REQ_PART: '#f0f7fe',
 };
 export default colors;

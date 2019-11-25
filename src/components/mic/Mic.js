@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   FlatList,
+  TouchableOpacity,
 } from 'react-native';
 import {icon} from '../../resource/icons';
 import {
@@ -41,6 +42,9 @@ const micData = [
   },
 ];
 class Mic extends PureComponent {
+  constructor(props) {
+    super(props);
+  }
   render() {
     return (
       <View>
@@ -48,38 +52,41 @@ class Mic extends PureComponent {
           data={micData}
           keyExtractor={(data, index) => index.toString()}
           renderItem={({item}) => (
-            <View style={styles.micFirstView}>
-              <View style={styles.micSecondView}>
-                <View style={styles.micImageView}>
-                  <Image
-                    style={styles.micImage}
-                    source={item.icon}
-                    resizeMode="contain"
-                  />
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate('MIC')}>
+              <View style={styles.micFirstView}>
+                <View style={styles.micSecondView}>
+                  <View style={styles.micImageView}>
+                    <Image
+                      style={styles.micImage}
+                      source={item.icon}
+                      resizeMode="contain"
+                    />
+                  </View>
+                </View>
+                <Text style={styles.micNameText}>{item.name}</Text>
+                <View style={styles.timeView}>
+                  <Image style={styles.clockIcon} source={icon.ICON_CLOCK} />
+                  <Text>{item.time}, </Text>
+                  <Text>{item.day}</Text>
+                </View>
+                <View style={styles.timeView}>
+                  <Image style={styles.clockIcon} source={icon.ICON_LOCATION} />
+                  <Text>{item.venue}, </Text>
+                  <Text>{item.region}</Text>
+                </View>
+                <View style={styles.addressView}>
+                  <Text style={styles.addressText}>{item.address},</Text>
+                </View>
+                <View style={styles.timeView}>
+                  <Image style={styles.clockIcon} source={icon.ICON_MIC} />
+                  <Text>About The Mic</Text>
+                </View>
+                <View style={styles.addressView}>
+                  <Text style={styles.aboutMicText}>{item.about}</Text>
                 </View>
               </View>
-              <Text style={styles.micNameText}>{item.name}</Text>
-              <View style={styles.timeView}>
-                <Image style={styles.clockIcon} source={icon.ICON_CLOCK} />
-                <Text>{item.time}, </Text>
-                <Text>{item.day}</Text>
-              </View>
-              <View style={styles.timeView}>
-                <Image style={styles.clockIcon} source={icon.ICON_LOCATION} />
-                <Text>{item.venue}, </Text>
-                <Text>{item.region}</Text>
-              </View>
-              <View style={styles.addressView}>
-                <Text style={styles.addressText}>{item.address},</Text>
-              </View>
-              <View style={styles.timeView}>
-                <Image style={styles.clockIcon} source={icon.ICON_MIC} />
-                <Text>About The Mic</Text>
-              </View>
-              <View style={styles.addressView}>
-                <Text style={styles.aboutMicText}>{item.about}</Text>
-              </View>
-            </View>
+            </TouchableOpacity>
           )}
         />
       </View>

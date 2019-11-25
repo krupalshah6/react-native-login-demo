@@ -40,25 +40,25 @@ export const styles = StyleSheet.create({
     height: heightPercentageToDP(10),
   },
   filterButton: {
-    flexDirection: 'row',
     marginTop: 30,
     marginStart: 20,
     marginEnd: 20,
     marginBottom: 30,
   },
   regionView: {
-    flex: 1,
     backgroundColor: colors.WHITE,
-    marginEnd: 5,
+    marginBottom: 10,
+    marginStart: 5,
   },
   boxMain: {
-    alignItems: 'center',
+//    alignItems: 'center',
   },
   boxView: {
     borderRadius: 5,
     borderWidth: 1,
     borderColor: colors.BG_GRAY,
     padding: 10,
+    alignItems: 'center',
   },
   regionValueText: {
     color: colors.DARKGRAY,
@@ -72,9 +72,9 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.WHITE,
     position: 'absolute',
     top: -7,
+    left: 10,
   },
   filterView: {
-    flex: 1,
     marginStart: 5,
     backgroundColor: colors.WHITE,
   },
@@ -83,7 +83,6 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: colors.BG_GRAY,
-    // height: 40,
     alignItems: 'center',
   },
   filterText: {

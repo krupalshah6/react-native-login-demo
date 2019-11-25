@@ -12,6 +12,7 @@ import LoginScreen from './LogInScreen/LoginScreen';
 import HomeScreen from './HomeScreen/HomeScreen';
 import SignupScreen from './SignUpScreen/SignupScreen';
 import DashBoard from './DashBoard/DashBoard';
+import MicDetailsScreen from './MicDetailsScreen/MicDetailsScreen';
 // error message
 import {showMessage} from '../resource/validationRules';
 // network call
@@ -26,6 +27,7 @@ import strings from '../resource/string';
 import {getAvatar} from '../redux/actions/basicActions';
 // dispatch
 import {dispatch} from '../redux/store';
+
 /**
  * @class AppScreen
  */
@@ -127,6 +129,7 @@ const MainNavigator = createStackNavigator(
     Home: {screen: HomeScreen, navigationOptions: {header: null}},
     SIGNUP: {screen: SignupScreen, navigationOptions: {header: null}},
     DashBoard: {screen: DashBoard, navigationOptions: {header: null}},
+    MIC: {screen: MicDetailsScreen, navigationOptions: {header: null}},
   },
   {initialRouteName: 'DashBoard'},
 );
@@ -137,6 +140,7 @@ const LoginNavigator = createStackNavigator(
     Home: {screen: HomeScreen, navigationOptions: {header: null}},
     SIGNUP: {screen: SignupScreen, navigationOptions: {header: null}},
     DashBoard: {screen: DashBoard, navigationOptions: {header: null}},
+    MIC: {screen: MicDetailsScreen, navigationOptions: {header: null}},
   },
   {initialRouteName: 'Home'},
 );

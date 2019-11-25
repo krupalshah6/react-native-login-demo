@@ -1,11 +1,16 @@
 import React, {PureComponent} from 'react';
-import {View, StyleSheet, Text, Image, FlatList} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import {icon} from '../../resource/icons';
-import strings from '../../resource/string';
 import colors from '../../resource/colors';
 import {RFPercentage} from 'react-native-responsive-fontsize';
 import {widthPercentageToDP} from 'react-native-responsive-screen';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import ParticipantDetailsModal from './ParticipantDetailsModal';
 
 class IntrestedToParticipate extends PureComponent {
@@ -34,6 +39,7 @@ class IntrestedToParticipate extends PureComponent {
   }
 
   renderModal() {
+    console.log('called');
     this.setState({showModal: !this.state.showModal});
   }
 
@@ -44,8 +50,8 @@ class IntrestedToParticipate extends PureComponent {
           data={this.state.participant}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({item}) => (
-            <TouchableOpacity onPress={this.renderModal}>
-              <View style={styles.borderBoxView}>
+            <View style={styles.borderBoxView}>
+              <TouchableOpacity onPress={this.renderModal}>
                 <View style={styles.rowView}>
                   <View style={styles.imageView}>
                     <Image source={icon.PROFILE_DEFAULT} />
@@ -77,8 +83,8 @@ class IntrestedToParticipate extends PureComponent {
                     </View>
                   </View>
                 </View>
-              </View>
-            </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
           )}
         />
         <ParticipantDetailsModal

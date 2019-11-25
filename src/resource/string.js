@@ -45,6 +45,9 @@ const strings = {
   CHANGE_PASSWORD: 'Change Password',
   SAVE: 'Save',
   UPDATE_ACCOUNT_DETAILS: 'Update Account Details',
+  MIC_CONTACT: 'Contact',
+  BTN_REQUEST_TO_PARTICIPATE: 'Request to participate',
+  TEXT_PARTICIPATE: 'Send request to producer',
 };
 
 export default strings;
