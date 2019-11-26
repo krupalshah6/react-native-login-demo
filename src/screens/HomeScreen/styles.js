@@ -31,7 +31,6 @@ export const styles = StyleSheet.create({
   },
   theaterView: {
     flexDirection: 'row',
-    backgroundColor: 'red',
     width: widthPercentageToDP(100),
     height: heightPercentageToDP(10),
   },

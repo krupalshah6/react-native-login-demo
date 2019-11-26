@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {View, Image, TouchableOpacity, Text} from 'react-native';
+import {View, Image, TouchableOpacity, Text, TouchableWithoutFeedback} from 'react-native';
 import {styles} from './styles';
 import {icon} from '../../resource/icons';
 import toggleMenu from '../../assets/images/openMic/icon/menu-white.png';
@@ -18,6 +18,7 @@ class MicDetailsScreen extends PureComponent {
     this.state = {
       isOpen: false,
       showModal: false,
+      micData: {},
     };
     this.toggleMenu = this.toggleMenu.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
@@ -30,6 +31,26 @@ class MicDetailsScreen extends PureComponent {
 
   componentDidMount() {
     this.checkAuth();
+    console.log('proops', this.props.navigation.state.params.micData);
+    const mic = this.props.navigation.state.params.micData[0];
+    const micData = {
+      id: mic.id,
+      name: mic.mic_name,
+      time: mic.mic_time,
+      day: mic.mic_day_name,
+      venue: mic.mic_venue,
+      region: mic.region.region,
+      address: mic.address,
+      about:mic.about_mic,
+      icon: mic.poster_image_url,
+      mic_cost_type: mic.mic_cost_type,
+      mic_cost: mic.mic_cost,
+      mic_fees: mic.mic_fees.fees,
+      producer: mic.producer,
+      contact: mic.producer.contact,
+      email: mic.producer.email
+    };
+    this.setState({micData});
   }
 
   checkAuth() {
@@ -107,18 +128,7 @@ class MicDetailsScreen extends PureComponent {
         />
       );
     }
-    const item = {
-      id: 0,
-      name: 'Comedy open Mic',
-      time: '04:20 PM',
-      day: 'Saturday',
-      venue: 'Mickey Cafe',
-      region: 'Bridgeport Gloucester',
-      address: '1232- Fashion street',
-      about:
-        'This mic is for open to all. Main purpose of this mic is entertainment of the people.',
-      icon: icon.MIC,
-    };
+    const {micData} = this.state;
     return (
       <SideMenu
         menu={this.state.isOpen && menu}
@@ -128,11 +138,14 @@ class MicDetailsScreen extends PureComponent {
         <View style={styles.container}>
           <View style={styles.rowCenter}>
             <View style={styles.imageView}>
+            <TouchableWithoutFeedback
+                onPress={() => this.props.navigation.navigate('Home')}>
               <Image
                 style={styles.imageLogo}
                 source={icon.LOGOMAIN}
                 resizeMode="contain"
               />
+              </TouchableWithoutFeedback>
             </View>
             <TouchableOpacity
               style={styles.toggleButton}
@@ -144,26 +157,26 @@ class MicDetailsScreen extends PureComponent {
             <View style={styles.micFirstView}>
               <View style={styles.micSecondView}>
                 <View style={styles.micImageView}>
-                  <Image
-                    style={styles.micImage}
-                    source={icon.MIC}
-                    resizeMode="contain"
-                  />
+                    <Image
+                      style={styles.micImage}
+                      source={micData.icon !== null ? {uri: micData.icon} : icon.DEFAULT_MIC}
+                      resizeMode="contain"
+                    />
                 </View>
               </View>
-              <Text style={styles.micNameText}>{item.name}</Text>
+              <Text style={styles.micNameText}>{micData.name}</Text>
               <View style={styles.timeView}>
                 <Image style={styles.clockIcon} source={icon.ICON_CLOCK} />
-                <Text>{item.time}, </Text>
-                <Text>{item.day}</Text>
+                <Text>{micData.time}, </Text>
+                <Text>{micData.day}</Text>
               </View>
               <View style={styles.timeView}>
                 <Image style={styles.clockIcon} source={icon.ICON_LOCATION} />
-                <Text>{item.venue}, </Text>
-                <Text>{item.region}</Text>
+                <Text>{micData.venue}, </Text>
+                <Text>{micData.region}</Text>
               </View>
               <View style={styles.addressView}>
-                <Text style={styles.addressText}>{item.address},</Text>
+                <Text style={styles.addressText}>{micData.address},</Text>
               </View>
               <View style={styles.timeView}>
                 <Image
@@ -173,25 +186,25 @@ class MicDetailsScreen extends PureComponent {
                 <Text>{strings.MIC_CONTACT}</Text>
               </View>
               <View style={styles.addressView}>
-                <Text style={styles.aboutMicText}>8866225367</Text>
+                <Text style={styles.aboutMicText}>{micData.contact}</Text>
                 <Text style={styles.aboutMicText}>
-                  krupal.citrusbug@gmail.com
+                  {micData.email}
                 </Text>
               </View>
               <View style={styles.timeView}>
                 <Image style={styles.clockIcon} source={icon.ICON_BEER} />
-                <Text>No Drink Minimum</Text>
+                <Text>{micData.mic_fees}</Text>
               </View>
               <View style={styles.timeView}>
                 <Image style={styles.clockIcon} source={icon.ICON_PAYMENT} />
-                <Text>PAID, $20</Text>
+                <Text>{micData.mic_cost_type}{micData.mic_cost_type === "PAID"? ', ' + micData.mic_cost: null}</Text>
               </View>
               <View style={styles.timeView}>
                 <Image style={styles.clockIcon} source={icon.ICON_MIC} />
                 <Text>Best About The Mic</Text>
               </View>
               <View style={styles.addressView}>
-                <Text style={styles.aboutMicText}>{item.about}</Text>
+                <Text style={styles.aboutMicText}>{micData.about}</Text>
               </View>
               <View style={styles.requestBtnView}>
                 <View style={styles.requestBtn}>

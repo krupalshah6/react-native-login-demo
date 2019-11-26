@@ -4,6 +4,8 @@ const initialState = {
   avatar: [],
   region: [],
   defaultRegion: {},
+  feesType: [],
+  filterData: {},
 };
 
 const basicReducers = (state = initialState, action) => {
@@ -22,6 +24,16 @@ const basicReducers = (state = initialState, action) => {
       return {
         ...state,
         defaultRegion: action.payload,
+      };
+    case types.GET_FEES_TYPE:
+      return {
+        ...state,
+        feesType: action.payload,
+      };
+    case types.SET_FILTER_DATA:
+      return {
+        ...state,
+        filterData: action.payload,
       };
     default:
       return state;

@@ -48,6 +48,31 @@ export const getRequest = async (apiUrl, isHeader) => {
   }
 };
 
+export const getRequestWithParams = async (apiUrl, isHeader) => {
+  let authHeader = null;
+  if (isHeader) {
+    authHeader = await AsyncStorage.getItem('Auth'); /// Add header
+  }
+  try {
+    const response = await fetch(apiUrl, {
+      credentials: 'include',
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        // eslint-disable-next-line prettier/prettier
+        'authorization': authHeader,
+      },
+    });
+    const responseJson = await response.json();
+    console.log('res', responseJson)
+    return responseJson;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export const postImageRequest = async (
   apiUrl,
   field,

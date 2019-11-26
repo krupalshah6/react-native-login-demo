@@ -5,6 +5,7 @@ const ApiUrls = {
   GET_AVATAR: BASE_URL + 'get-avtar',
   GET_REGION: BASE_URL + 'get-regions',
   GET_FEES: BASE_URL + 'get-fees',
+  GET_MIC_WITH_FILTER: BASE_URL + 'mic-filter',
 };
 
 export default ApiUrls;

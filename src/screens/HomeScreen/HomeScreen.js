@@ -22,12 +22,15 @@ import FilterModal from './FilterModal';
 import colors from '../../resource/colors';
 import Mic from '../../components/mic/Mic';
 import AsyncStorage from '@react-native-community/async-storage';
-import {getRequest} from '../../network/APIRequest';
+import {getRequest, getRequestWithParams} from '../../network/APIRequest';
 import ApiUrls from '../../network/APIUrl';
 import {showMessage} from '../../resource/validationRules';
 import NetInfo from '@react-native-community/netinfo';
-import {getRegion, setCurrentRegion} from '../../redux/actions/basicActions';
+import {getRegion, setCurrentRegion, getFeesType} from '../../redux/actions/basicActions';
+import {setMicData} from '../../redux/actions/micActions';
 import {dispatch} from '../../redux/store';
+import {BarIndicator} from 'react-native-indicators';
+
 class HomeScreen extends PureComponent {
   constructor(props) {
     super(props);
@@ -47,7 +50,11 @@ class HomeScreen extends PureComponent {
         {id: 6, day: 'Friday', selected: false},
       ],
       region: [],
+      feesType: [],
       defaultRegion: {},
+      filterData: {},
+      micData: [],
+      loader: false,
     };
     this.toggleMenu = this.toggleMenu.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
@@ -57,6 +64,29 @@ class HomeScreen extends PureComponent {
   }
 
   componentDidMount() {
+    var dayIndex;
+    this.state.days.map((data, index) => {
+      if (data.selected === true) {
+        dayIndex = data.id;
+      };
+    });
+      const dayValue = {
+      0:'6',
+      1:'7',
+      2:'1',
+      3:'2',
+      4:'3',
+      5:'4',
+      6:'5',
+    };
+
+   const day_filter = parseInt(dayValue[dayIndex]);
+   const region_filter = 1;
+   const fees_filter = '';
+   const featured_filter = false;
+   const search_filter = '';
+   const category_filter = '';
+   const page = 1;
     this.checkAuth();
     NetInfo.isConnected.addEventListener(
       'connectionChange',
@@ -67,6 +97,7 @@ class HomeScreen extends PureComponent {
       if (isConnected === true) {
         this.getRegionData();
         this.getMicFeesType();
+        this.getMicWithFilter(day_filter, region_filter, fees_filter, featured_filter, search_filter, category_filter, page);
         this.setState({isConnected: true});
       } else {
         this.setState({isConnected: false});
@@ -84,9 +115,67 @@ class HomeScreen extends PureComponent {
   componentDidUpdate(preProps) {
     if (preProps.defaultRegion !== this.props.defaultRegion) {
       // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({defaultRegion: this.props.defaultRegion});
+      this.setState({defaultRegion: this.props.defaultRegion}, () => {
+        console.log('default region', this.state.defaultRegion)
+        var dayIndex;
+        this.state.days.map((data, index) => {
+          if (data.selected === true) {
+            dayIndex = data.id;
+          };
+        });
+          const dayValue = {
+          0:'6',
+          1:'7',
+          2:'1',
+          3:'2',
+          4:'3',
+          5:'4',
+          6:'5',
+        };
+    
+       const day_filter = parseInt(dayValue[dayIndex]);
+       const region_filter = this.state.defaultRegion.id;
+       const fees_filter = '';
+       const featured_filter = false;
+       const search_filter = '';
+       const category_filter = '';
+       const page = 1;
+       this.setState({ loader: true});
+       this.getMicWithFilter(day_filter, region_filter, fees_filter, featured_filter, search_filter, category_filter, page);
+      });
     }
-  }
+    if (preProps.filterData !== this.props.filterData) {
+      this.setState({filterData: this.props.filterData}, () => {
+        console.log('filter data', this.state.filterData)
+        var dayIndex;
+        this.state.days.map((data, index) => {
+          if (data.selected === true) {
+            dayIndex = data.id;
+          };
+        });
+          const dayValue = {
+          0:'6',
+          1:'7',
+          2:'1',
+          3:'2',
+          4:'3',
+          5:'4',
+          6:'5',
+        };
+    
+       const day_filter = parseInt(dayValue[dayIndex]);
+       const region_filter = this.state.defaultRegion.id;
+       const fees_filter = this.state.filterData.feesType.key;
+       const featured_filter = false;
+       const search_filter = this.state.filterData.searchKeyword;
+       const category_filter = '';
+       const page = 1;
+       this.setState({ loader: true});
+       this.getMicWithFilter(day_filter, region_filter, fees_filter, featured_filter, search_filter, category_filter, page);
+
+      });
+    }
+  } 
 
   _handleConnectivityChange = isConnected => {
     if (isConnected === true) {
@@ -97,7 +186,6 @@ class HomeScreen extends PureComponent {
   };
 
   async getRegionData() {
-    console.log('called');
     if (!this.state.isConnected) {
       showMessage(strings.NO_INTERNET_CONNECTION);
       return;
@@ -124,7 +212,39 @@ class HomeScreen extends PureComponent {
     }
     const result = await getRequest(ApiUrls.GET_FEES);
     if (result.code === 200 && result.status === true) {
-      console.log('fees type', result);
+      this.setState({feesType:result.data});
+      dispatch(getFeesType(result.data));
+    }
+  }
+
+  async getMicWithFilter(day_filter, region_filter, fees_filter, featured_filter, search_filter, category_filter, page) {
+    if (!this.state.isConnected) {
+      showMessage(strings.NO_INTERNET_CONNECTION);
+      return;
+    }
+
+    const params = {
+      region_filter:region_filter,
+      fees_filter:fees_filter,
+      featured_filter:featured_filter,
+      day_filter:day_filter,
+      search_filter:search_filter,
+      category_filter:category_filter,
+      page:page
+    }
+    let urlParameters = Object.entries(params)
+        .map(e => e.join("="))
+        .join("&");
+    console.log('url', ApiUrls.GET_MIC_WITH_FILTER + '?' + urlParameters)
+    const result = await getRequestWithParams(ApiUrls.GET_MIC_WITH_FILTER + '?' + urlParameters);
+    if (result.code === 200 && result.status === true) {
+      setTimeout(() => {
+        this.setState({ loader: false });
+      }, 1000);
+      dispatch(setMicData(result.data));
+      this.setState({micData: result.data});
+    } else if(result.code === 200 && result.status === false) {
+      showMessage(result.message);
     }
   }
 
@@ -187,7 +307,33 @@ class HomeScreen extends PureComponent {
       }
       return;
     });
-    this.setState({days: days});
+    this.setState({days: days}, () => {
+      var dayIndex;
+        this.state.days.map((data, index) => {
+          if (data.selected === true) {
+            dayIndex = data.id;
+          };
+        });
+          const dayValue = {
+          0:'6',
+          1:'7',
+          2:'1',
+          3:'2',
+          4:'3',
+          5:'4',
+          6:'5',
+        };
+    
+       const day_filter = parseInt(dayValue[dayIndex]);
+       const region_filter = this.state.defaultRegion.id;
+       const fees_filter = '';
+       const featured_filter = false;
+       const search_filter = '';
+       const category_filter = '';
+       const page = 1;
+       this.setState({ loader: true});
+       this.getMicWithFilter(day_filter, region_filter, fees_filter, featured_filter, search_filter, category_filter, page);
+    });
   };
 
   handleViewDays = () => {
@@ -240,6 +386,7 @@ class HomeScreen extends PureComponent {
         isOpen={this.state.isOpen}
         menuPosition="right"
         onChange={isOpen => this.updateMenuState(isOpen)}>
+
         <View style={styles.container}>
           <View style={styles.rowCenter}>
             <View style={styles.imageView}>
@@ -348,7 +495,7 @@ class HomeScreen extends PureComponent {
                   </TouchableOpacity>
                 </View>
               </View>
-              <Mic navigation={this.props.navigation} />
+              <Mic navigation={this.props.navigation} micData={this.state.micData} />
             </View>
           </ScrollView>
         </View>
@@ -360,8 +507,14 @@ class HomeScreen extends PureComponent {
         <FilterModal
           modalVisible={this.state.filterModalVisible}
           toggleModal={this.filterToggleModal}
+          feesType={this.state.feesType}
         />
         {this.state.modalVisible && <View style={styles.overlay} />}
+        {this.state.loader === true &&
+        <View style={styles.overlay}>
+          <BarIndicator color='white' count={5}/>
+        </View>
+        } 
       </SideMenu>
     );
   }
@@ -369,6 +522,7 @@ class HomeScreen extends PureComponent {
 
 const mapStateToProps = state => ({
   defaultRegion: state.basicReducers.defaultRegion,
+  filterData: state.basicReducers.filterData,
 });
 export default connect(
   mapStateToProps,

@@ -23,4 +23,5 @@ export const icon = {
   ICON_CONTACT_BLACK: require('../assets/images/contacts_black.png'),
   ICON_BEER: require('../assets/images/beer.png'),
   ICON_PAYMENT: require('../assets/images/card.png'),
+  DEFAULT_MIC: require('../assets/images/openMic/mic.png'),
 };

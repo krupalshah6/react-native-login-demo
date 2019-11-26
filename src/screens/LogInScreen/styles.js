@@ -88,4 +88,8 @@ export const styles = StyleSheet.create({
     height: 30,
     width: 30,
   },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
 });

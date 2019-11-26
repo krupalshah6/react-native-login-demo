@@ -9,6 +9,7 @@ import {
   ScrollView,
   Keyboard,
   Alert,
+  TouchableWithoutFeedback,
 } from 'react-native';
 //sidemenu
 import SideMenu from 'react-native-side-menu';
@@ -32,6 +33,7 @@ import {showMessage} from '../../resource/validationRules';
 // actions
 import {userLogin} from '../../redux/actions/authActions';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {BarIndicator} from 'react-native-indicators';
 
 class LoginScreen extends PureComponent {
   constructor(props) {
@@ -40,6 +42,7 @@ class LoginScreen extends PureComponent {
       isOpen: false,
       fname: '',
       showPassword: true,
+      loader: false,
     };
     this.toggleMenu = this.toggleMenu.bind(this);
     this.handleSignUp = this.handleSignUp.bind(this);
@@ -122,11 +125,14 @@ class LoginScreen extends PureComponent {
         <View style={styles.container}>
           <View style={styles.rowCenter}>
             <View style={styles.imageView}>
+            <TouchableWithoutFeedback
+                onPress={() => this.props.navigation.navigate('Home')}>
               <Image
                 style={styles.imageLogo}
                 source={icon.LOGOMAIN}
                 resizeMode="contain"
               />
+              </TouchableWithoutFeedback>
             </View>
             <TouchableOpacity
               style={styles.toggleButton}
@@ -158,19 +164,26 @@ class LoginScreen extends PureComponent {
                       return;
                     }
                     Keyboard.dismiss();
+                    this.setState({loader: true});
                     this.props
                       .userLogin(userLoginData)
                       .then(value => {
-                        Alert.alert('called');
                         if (this.props.response === undefined) {
                           return;
                         }
                         const {status, message, data} = this.props.response;
                         if (status === false) {
                           showMessage(message);
+                          setTimeout(() => {
+                            this.setState({loader: false});
+                          }, 1000);
                         } else if (status === true) {
-                          AsyncStorage.setItem('user', JSON.stringify(data));
-                          this.props.navigation.replace('DashBoard');
+                          setTimeout(() => {
+                            this.setState({loader: false}, () => {
+                              AsyncStorage.setItem('user', JSON.stringify(data));
+                              this.props.navigation.replace('DashBoard');
+                            });
+                          }, 1000);
                         }
                       })
                       .catch(error => {
@@ -232,6 +245,11 @@ class LoginScreen extends PureComponent {
             </ScrollView>
           </KeyboardAwareScrollView>
         </View>
+        {this.state.loader === true &&
+        <View style={styles.overlay}>
+          <BarIndicator color='white' count={5}/>
+        </View>
+        } 
       </SideMenu>
     );
   }

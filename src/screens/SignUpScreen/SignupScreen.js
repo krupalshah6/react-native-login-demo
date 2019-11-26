@@ -5,7 +5,7 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
-  Alert,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import {styles} from './styles';
 import strings from '../../resource/string';
@@ -120,11 +120,14 @@ class SignupScreen extends PureComponent {
         <View style={styles.container}>
           <View style={styles.rowCenter}>
             <View style={styles.imageView}>
+            <TouchableWithoutFeedback
+                onPress={() => this.props.navigation.navigate('Home')}>
               <Image
                 style={styles.imageLogo}
                 source={icon.LOGOMAIN}
                 resizeMode="contain"
               />
+              </TouchableWithoutFeedback>
             </View>
             <TouchableOpacity
               style={styles.toggleButton}

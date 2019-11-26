@@ -32,6 +32,7 @@ const strings = {
   MICTYPE: 'Select Mic Type',
   SEARCHMIC: 'Quick Search',
   BTN_FILTER_APPLY: 'Apply Filter',
+  BTN_RESET: 'Reset Filter',
   WEEK_DAYS: 'VIEW OTHER WEEK DAYS',
   HIDE_WEEK_DAYS: 'HIDE OTHER WEEK DAYS',
   DASHBOARD: 'DASHBOARD',

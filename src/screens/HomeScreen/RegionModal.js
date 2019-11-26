@@ -51,7 +51,6 @@ class RegionModal extends PureComponent {
 
   render() {
     const {modalVisible, toggleModal} = this.props;
-    console.log('region list', this.state.regionList);
     return (
       <Modal visible={modalVisible} animationType="slide" transparent={true}>
         <View style={styles.mainView}>

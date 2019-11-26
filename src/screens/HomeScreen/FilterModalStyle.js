@@ -72,10 +72,13 @@ export const styles = StyleSheet.create({
     width: widthPercentageToDP(80),
     padding: 10,
   },
+  btnRowView: {
+    flexDirection: 'row',
+  },
   applyView: {
-    margin: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+   flex: 1,
+   marginStart: 20,
+   marginEnd: 20,
   },
   buttonStyle: {
     borderRadius: 4,
@@ -85,7 +88,6 @@ export const styles = StyleSheet.create({
     borderColor: 'rgba(255,255,255,0.7)',
     backgroundColor: colors.LIGHTGRAY,
     opacity: 1,
-    width: widthPercentageToDP(80),
   },
   textSignUp: {
     color: colors.DODGER_BLUE,

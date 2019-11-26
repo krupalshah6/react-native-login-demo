@@ -96,12 +96,10 @@ class DashBoard extends PureComponent {
     const {userData} = this.state;
     const {avatar} = this.props;
     if (userData) {
-      console.log('avatar', this.props.avatar);
       avatar.length > 0 &&
         avatar.map(item => {
           if (userData.profile_avtar === item.id) {
             this.setState({profile: item.profile_avtar_url}, () => {
-              console.log('profile', this.state.profile);
             });
           }
         });

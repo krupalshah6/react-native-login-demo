@@ -15,80 +15,72 @@ import {
 } from 'react-native-responsive-screen';
 import colors from '../../resource/colors';
 import {RFPercentage} from 'react-native-responsive-fontsize';
-const micData = [
-  {
-    id: 0,
-    name: 'Comedy open Mic',
-    time: '04:20 PM',
-    day: 'Saturday',
-    venue: 'Mickey Cafe',
-    region: 'Bridgeport Gloucester',
-    address: '1232- Fashion street',
-    about:
-      'This mic is for open to all. Main purpose of this mic is entertainment of the people.',
-    icon: icon.MIC,
-  },
-  {
-    id: 1,
-    name: 'Comedy open Mic',
-    time: '03:20 PM',
-    day: 'Saturday',
-    venue: 'Mickey Cafe',
-    region: 'Bridgeport Gloucester',
-    address: '1232- Fashion street',
-    about:
-      'This mic is for open to all. Main purpose of this mic is entertainment of the people.',
-    icon: icon.MICTWO,
-  },
-];
 class Mic extends PureComponent {
   constructor(props) {
     super(props);
+    this.state = {
+      micData: [],
+    }
   }
+  
+  componentDidMount() {
+    const {micData} = this.props;
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.micData !== this.props.micData) {
+      this.setState({micData: this.props.micData});
+    }
+  } 
+
   render() {
     return (
       <View>
+        {this.state.micData.length > 0 ?
         <FlatList
-          data={micData}
+          data={this.state.micData}
           keyExtractor={(data, index) => index.toString()}
           renderItem={({item}) => (
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('MIC')}>
+              onPress={() => this.props.navigation.navigate('MIC', {micData: this.state.micData})}>
               <View style={styles.micFirstView}>
                 <View style={styles.micSecondView}>
                   <View style={styles.micImageView}>
                     <Image
                       style={styles.micImage}
-                      source={item.icon}
+                      source={item.poster_image !== null? {uri:item.poster_image} : icon.DEFAULT_MIC}
                       resizeMode="contain"
                     />
                   </View>
                 </View>
-                <Text style={styles.micNameText}>{item.name}</Text>
+                <Text style={styles.micNameText}>{item.mic_name}</Text>
                 <View style={styles.timeView}>
                   <Image style={styles.clockIcon} source={icon.ICON_CLOCK} />
-                  <Text>{item.time}, </Text>
-                  <Text>{item.day}</Text>
+                  <Text>{item.mic_time} PM, </Text>
+                  <Text>{item.mic_day_name}</Text>
                 </View>
                 <View style={styles.timeView}>
                   <Image style={styles.clockIcon} source={icon.ICON_LOCATION} />
-                  <Text>{item.venue}, </Text>
-                  <Text>{item.region}</Text>
+                  <Text>{item.mic_venue}, </Text>
                 </View>
+                <Text style={styles.regionText}>{item.region.region}</Text>
                 <View style={styles.addressView}>
-                  <Text style={styles.addressText}>{item.address},</Text>
+                  <Text style={styles.addressText}>{item.address}</Text>
                 </View>
                 <View style={styles.timeView}>
                   <Image style={styles.clockIcon} source={icon.ICON_MIC} />
                   <Text>About The Mic</Text>
                 </View>
                 <View style={styles.addressView}>
-                  <Text style={styles.aboutMicText}>{item.about}</Text>
+                  <Text style={styles.aboutMicText}>{item.about_mic}</Text>
                 </View>
               </View>
             </TouchableOpacity>
           )}
         />
+        : <View style={styles.noEventFound}>
+          <Text style={styles.noEventText}>No Event Found..!</Text>
+          </View>}
       </View>
     );
   }
@@ -103,6 +95,7 @@ let styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 2,
     elevation: 1,
+    flex: 1,
   },
   micSecondView: {
     justifyContent: 'center',
@@ -152,6 +145,16 @@ let styles = StyleSheet.create({
   aboutMicText: {
     color: colors.BTN_TAB_GRAY,
     marginBottom: 10,
+  },
+  regionText: {
+    marginStart: 50,
+  },
+  noEventFound: {
+    margin: 20,
+  },
+  noEventText: {
+    fontSize: RFPercentage(3),
+    color: colors.GRAY_DARK_TEXT,
   },
 });
 export default Mic;

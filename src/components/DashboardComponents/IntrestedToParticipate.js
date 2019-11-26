@@ -39,7 +39,6 @@ class IntrestedToParticipate extends PureComponent {
   }
 
   renderModal() {
-    console.log('called');
     this.setState({showModal: !this.state.showModal});
   }
 

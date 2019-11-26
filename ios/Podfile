@@ -40,20 +40,5 @@ target 'reactNativeFirstDemo' do
 
   pod 'react-native-netinfo', :path => '../node_modules/@react-native-community/netinfo'
 
-  target 'reactNativeFirstDemoTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
   use_native_modules!
-end
-
-target 'reactNativeFirstDemo-tvOS' do
-  # Pods for reactNativeFirstDemo-tvOS
-
-  target 'reactNativeFirstDemo-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
 end
